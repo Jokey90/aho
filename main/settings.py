@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'aho',
         'HOST': 'srv-db-01\\nssql',
         'USER': 'sa',
-        'PASSWORD': '3-1-37-38'
+        'PASSWORD': '***********'
     }
 }
 
@@ -95,7 +95,7 @@ DATABASES = {
 EMAIL_HOST = 'srv-ps-10.cds.ru'
 #EMAIL_PORT = 25
 EMAIL_HOST_USER = 'zayavka-aho'
-EMAIL_HOST_PASSWORD = '48484896'
+EMAIL_HOST_PASSWORD = '************'
 EMAIL_SENDER_FROM = 'Maintenance_dpt@gorn.ru'
 
 
