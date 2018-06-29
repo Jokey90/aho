@@ -1,0 +1,90 @@
+{% extends 'mobile/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <h2>
+        <i class="fa fa-file"></i> Отчет по мобильной связи за {% month month %} {{ year }}
+    </h2>
+{% endblock %}
+
+{% block body %}
+    <h4>Сравнение с бюджетом</h4>
+    <table class="table table-xs table-bordered">
+        <thead>
+            <tr>
+                <th> </th>
+                <th>Бюджет</th>
+                <th>Факт с НДС</th>
+                <th>Экономия</th>
+                <th>Перерасход</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in totals_div.values %}
+                <tr>
+                    <th>{{ row.name }}</th>
+                    <td>{{ row.budget.amount|floatformat:"2" }}</td>
+                    <td>{{ row.values.amount|floatformat:"2" }}</td>
+                    <td>{{ row.budget.economy|floatformat:"2" }}</td>
+                    <td>{{ row.budget.exceed|floatformat:"2" }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br/><br/>
+
+    <h4>Суммы по группам и счетам</h4>
+    <table class="table table-xs table-hover table-bordered">
+        <thead>
+            <tr>
+                <th> </th>
+                {% for c in contracts.values %}
+                    <th>{{ c }}</th>
+                {% endfor %}
+                <th>Итого</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in totals %}
+                <tr>
+                    {% for val in row %}
+                        {% if forloop.first %}
+                            <th>{{ val }}</th>
+                        {% else %}
+                            <td>{{ val|floatformat:"2" }}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br/><br/>
+    <h3>Детализация по сотрудникам</h3>
+    <br/><br/>
+    {% for dep in deps %}
+        {% if dep.totals.amount > 0 or dep.totals_sum.amount > 0 %}
+            <h4>{{ dep.dep_name }}:</h4>
+            <table class="table table-xs table-bordered">
+                <thead>
+                    <tr>
+                        <th width="250">Сотрудник</th>
+                        <th>Группа</th>
+                        <th>Номер</th>
+                        <th>Договор</th>
+                        <th>Лимит</th>
+                        <th>Факт без НДС</th>
+                        <th>Факт с НДС</th>
+                        <th>Экономия</th>
+                        <th>Перерасход</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% include 'mobile/report/general_recurse_row.html' %}
+                </tbody>
+            </table>
+            <br/><br/>
+        {% endif %}
+    {% endfor %}
+
+{% endblock %}

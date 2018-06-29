@@ -1,0 +1,36 @@
+{% extends 'td/base.html' %}
+
+{% block content_header %}
+    <a href="{% url 'td:expense_edit' eid=expense.id %}" class="btn btn-sm btn-primary">Редактировать запись</a>
+    {% if request.user.is_superuser %}
+        <a href="{% url 'td:expense_delete' eid=expense.id %}" class="btn btn-sm btn-danger">Удалить</a>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <br/>
+    <h3><i class="fa fa-money"></i></h3>
+    <br/>
+    <table class="table">
+        <tr>
+            <td><b>Дата</b></td>
+            <td>{{ expense.date }}</td>
+        </tr>
+        <tr>
+            <td><b>Автомобиль</b></td>
+            <td>{{ expense.car.name }} <span class="comment">{{ expense.car.number }}</span></td>
+        </tr>
+        <tr>
+            <td><b>Статья</b></td>
+            <td>{{ expense.budget_subitem.name }}</td>
+        </tr>
+        <tr>
+            <td><b>Сумма</b></td>
+            <td>{{ expense.amount }}</td>
+        </tr>
+        <tr>
+            <td><b>Комментарий</b></td>
+            <td>{{ expense.comment }}</td>
+        </tr>
+    </table>
+{% endblock %}

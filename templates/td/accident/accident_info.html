@@ -1,0 +1,57 @@
+{% extends 'td/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <a href="{% url 'td:accident_edit' aid=accident.id %}" class="btn btn-sm btn-primary">Редактировать</a>
+    <button onclick="if(confirm('Удалить безвозвратно?')){location.href='{% url 'td:accident_delete' aid=accident.id %}';}"
+                       class="btn btn-sm btn-danger" title="удалить">Удалить</button>
+{% endblock %}
+
+{% block body %}
+    <br/>
+    <h3>
+        <i class="fa fa-warning"></i> {{ accident.name }}
+    </h3>
+    <br/>
+    <table class="table">
+        <tr><td width="400"><b>{% get_label acident 'car' %}</b></td><td><a href="{% url 'td:car_info' cid=accident.car_id %}">{{ accident.car }}</a></td></tr>
+        <tr><td><b>{% get_label accident 'date' %}</b></td><td>{{ accident.date }}</td></tr>
+        <tr>
+            <td><b>{% get_label accident 'culprit' %}</b></td>
+            <td>
+                {% if accident.culprit %}
+                    <a href="{% url 'td:driver_info' did=accident.culprit.id %}">{{ accident.culprit }}</a>
+                {% else %}
+                    Не наш водитель
+                {% endif %}
+            </td>
+        </tr>
+        <tr><td><b>{% get_label accident 'comment' %}</b></td><td>{{ accident.comment }}</td></tr>
+    </table>
+    <br/>
+    <h4>
+        Документы
+        <a href="{% url 'td:accident_doc_new' %}?accident={{ accident.id }}" class="btn btn-sm btn-success">Добавить</a>
+    </h4>
+    <table class="table">
+        <tr>
+            <th>Название</th>
+            <th>Скан</th>
+            <th width="200">Действия</th>
+        </tr>
+        {% for doc in docs%}
+            <tr>
+                <td>
+                    {{ doc.name }}
+                </td>
+                <td>
+                    {% image_link doc.scan %}
+                </td>
+                <td>
+                    <a href='{% url 'td:accident_doc_edit' did=doc.id %}' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    <button onclick='confirm_delete("{% url 'td:accident_doc_delete' did=doc.id %}");' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

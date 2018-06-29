@@ -1,0 +1,40 @@
+{% if dep.totals.amount > 0 or dep.totals_sum.amount > 0 %}
+    <tr class="table-warning">
+        <th colspan="4">{% for lvl in dep.levels_range %}<span class="tree-padding"></span>{% endfor %}{{ dep.dep_name }}</th>
+        <th>{{ dep.totals.limit }}</th>
+        <th>{{ dep.totals.amount_nonds|floatformat:"2" }}</th>
+        <th>{{ dep.totals.amount|floatformat:"2" }}</th>
+        <th>{{ dep.totals.economy|floatformat:"2" }}</th>
+        <th>{{ dep.totals.exceed|floatformat:"2" }}</th>
+    </tr>
+    <tr>
+        {% for row in dep.rows %}
+            <tr>
+                <td>{{ row.emp }}</td>
+                <td>{{ row.group_name }}</td>
+                <td>{{ row.number }}</td>
+                <td>{{ row.contract }}</td>
+                <td>{{ row.limit }}</td>
+                <td>{{ row.amount_nonds|floatformat:"2" }}</td>
+                <td>{{ row.amount|floatformat:"2" }}</td>
+                <td>{{ row.economy|floatformat:"2" }}</td>
+                <td>{{ row.exceed|floatformat:"2" }}</td>
+            </tr>
+        {% endfor %}
+    </tr>
+    {% for child in dep.children %}
+        {% with dep=child %}
+            {% include 'mobile/report/general_recurse_row.html' %}
+        {% endwith %}
+    {% endfor %}
+    {% if dep.level == 0 %}
+        <tr class="table-info">
+            <th colspan="4">Итого по {{ dep.dep_name }}:</th>
+            <th>{{ dep.totals_sum.limit }}</th>
+            <th>{{ dep.totals_sum.amount_nonds|floatformat:"2" }}</th>
+            <th>{{ dep.totals_sum.amount|floatformat:"2" }}</th>
+            <th>{{ dep.totals_sum.economy|floatformat:"2" }}</th>
+            <th>{{ dep.totals_sum.exceed|floatformat:"2" }}</th>
+        </tr>
+    {% endif %}
+{% endif %}

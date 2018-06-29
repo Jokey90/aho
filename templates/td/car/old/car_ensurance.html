@@ -1,0 +1,20 @@
+{% extends 'td/car/car_info_base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block info_container %}
+    <table class="table">
+        <tr><th width="400">ОСАГО</th><td><a href="{% url 'td:car_edit_ensurance' cid=car.id %}" class="btn btn-primary btn-sm">Редактировать</a></td></tr>
+        <tr><td>{% get_label car "osago_number" %}</td><td>{{ car.osago_number }}</td></tr>
+        <tr><td>{% get_label car "osago_date" %}</td><td>{{ car.osago_date|empty }}</td></tr>
+        <tr><td>{% get_label car "osago_company" %}</td><td>{{ car.osago_company }}</td></tr>
+        <tr><td>{% get_label car "osago_place" %}</td><td>{{ car.get_osago_place_display }}</td></tr>
+        <tr><td>{% get_label car "osago_scan" %}</td><td>{% image_link car.osago_scan %}</td></tr>
+        <tr><th colspan="2">КАСКО</th></tr>
+        <tr><td>{% get_label car "kasko_number" %}</td><td>{{ car.kasko_number }}</td></tr>
+        <tr><td>{% get_label car "kasko_date" %}</td><td>{{ car.kasko_date|empty }}</td></tr>
+        <tr><td>{% get_label car "kasko_company" %}</td><td>{{ car.kasko_company }}</td></tr>
+        <tr><td>{% get_label car "kasko_place" %}</td><td>{{ car.get_kasko_place_display }}</td></tr>
+        <tr><td>{% get_label car "kasko_scan" %}</td><td>{% image_link car.kasko_scan %}</td></tr>
+    </table>
+{% endblock %}

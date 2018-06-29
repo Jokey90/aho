@@ -1,0 +1,39 @@
+{% extends 'td/car/car_edit_base.html' %}
+{% load staticfiles %}
+{% block form %}
+    {{ form.media }}
+    <form class="form" action="" id="car" method="post"  enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <table class="table">
+            <tr><th colspan="2">ПТС</th></tr>
+            {% with form.pts_number as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.pts_place as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.pts_scan as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            <tr><th colspan="2">СТС</th></tr>
+            {% with form.sts_number as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.sts_place as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.sts_scan as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            <tr><th colspan="2">Диагностическая карта</th></tr>
+            {% with form.diag_card_number as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.diag_card_place as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.diag_card_date as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.diag_card_scan as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            <tr><th colspan="2">Топливная карта</th></tr>
+            {% with form.fuel_card_number as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.fuel_card_pin as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.fuel_card_place as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.fuel_card_date as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.fuel_card_scan as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            <tr><th colspan="2">Корпоративная карта</th></tr>
+            {% with form.corp_card_number as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.corp_card_pin as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.corp_card_place as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.corp_card_scan as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            <tr><th colspan="2">Сигнализация</th></tr>
+            {% with form.alarm_number as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.alarm_sim_number as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+        </table>
+
+    </form>
+{% endblock %}

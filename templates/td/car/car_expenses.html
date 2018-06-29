@@ -1,0 +1,107 @@
+{% extends 'td/base.html' %}
+{% load staticfiles %}
+
+<!------- deprecated --------->
+
+{% block actions %}
+    <a href="{% url 'td:car_edit' cid=car.id %}" class="btn btn-primary">Редактировать</a>
+    <a href="{% url 'td:expense_new' %}?car={{ car.id }}" class="btn btn-secondary">Добавить расход</a>
+    <a href="#" class="btn btn-danger">Удалить</a>
+{% endblock %}
+
+{% block main %}
+    <br/>
+    <h3><i class="fa fa-car"></i> {{ car.name }} <span class="comment">{{ car.number }}</span></h3>
+    <br/>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_info' cid=car.id %}#main">Инфо</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_info' cid=car.id %}#proxies">Дов-ти</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_info' cid=car.id %}#docs">Док-ты</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_info' cid=car.id %}#ensurance">Страховка</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_info' cid=car.id %}#to">ТО</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_info' cid=car.id %}#tires">Резина</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_info' cid=car.id %}#passes">Пропуска</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_info' cid=car.id %}#rent">Аренда</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_mileage' cid=car.id %}">Пробег</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="{% url 'td:car_expenses' cid=car.id %}">Расходы</a>
+        </li>
+    </ul>
+
+    <div class="tab-pane" id="expenses" role="tabpanel">
+        <br/>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Водитель</th>
+                    <th>Статья</th>
+                    <th>Сумма</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for expense in expenses %}
+                {% ifchanged expense.month %}
+                    <tr>
+                    <th colspan="3">
+                        {{ expense.month_name }} {{ expense.year }}
+                    </th>
+                    <th>
+                        {{ expense.sum }} руб.
+                    </th>
+                    <th>
+                        <span class="comment">кнопка</span>
+                    </th>
+                <td>
+                {% endifchanged %}
+                <tr>
+                    <td>
+                        <a href="{% url 'td:expense_info' eid=expense.id %}">{{ expense.date}}</a>
+                    </td>
+                <td>
+                    {{ expense.driver.emp.short_name }}
+                </td>
+                <td>
+                    {{ expense.budget_subitem.name }}
+                </td>
+                <td>
+                    {{ expense.amount }} руб.
+                </td>
+                    <td width="10%">
+                        <a href='{% url 'td:expense_edit' eid=expense.id %}' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                        {% if request.user.is_superuser %}
+                            {% if expense.active %}
+                                <a href='{% url 'td:expense_delete' eid=expense.id %}' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></a>
+                            {% else %}
+                                <a href='{% url 'td:expense_delete' eid=expense.id %}' class="btn btn-sm btn-warning" title="восстановить"><i class="fa fa-refresh"></i></a>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'td/js/car_info.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,307 @@
+{% extends 'td/base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block actions %}
+    <a href="{% url 'td:car_edit' cid=car.id %}" class="btn btn-primary">Редактировать</a>
+    <a href="#" class="btn btn-danger">Удалить</a>
+{% endblock %}
+
+{% block main %}
+    <br/>
+    <h3><i class="fa fa-car"></i> {{ car.name }} <span class="comment">{{ car.number }}</span></h3>
+    <br/>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#main" role="tab">Инфо</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#docs" role="tab">Документы</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#proxies" role="tab">Доверенностити</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#ensurance" role="tab">Страховка</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#to" role="tab">ТО</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#tires" role="tab">Резина</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#passes" role="tab">Ключи/Пропуска</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_mileage' cid=car.id %}">Пробег</a>
+        </li>
+        <!--<li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_expenses' cid=car.id %}">Расходы</a>
+        </li>-->
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="main" role="tabpanel">
+            <br/>
+            <table class="table">
+                <tr>
+                    <th width="400">Модель</th>
+                    <td>{{ car.name }}</td>
+                </tr>
+                <tr>
+                    <th>Гос. номер</th>
+                    <td>{{ car.number }}</td>
+                </tr>
+                <tr>
+                    <th>VIN</th>
+                    <td>{{ car.vin }}</td>
+                </tr>
+                <tr>
+                    <th>Описание/комментарии</th>
+                    <td>{{ car.description }}</td>
+                </tr>
+                <tr>
+                    <th>Руководитель/пассажир</th>
+                    <td>
+                        {% if car.owner %}
+                            <a href="{% url 'main:employee_info' eid=car.owner.id %}">{{ car.owner.short_name }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Год выпуска</th>
+                    <td>{{ car.release_year }}</td>
+                </tr>
+                <tr>
+                    <th>Мощность, л.с.</th>
+                    <td>{{ car.power }}</td>
+                </tr>
+                <tr>
+                    <th>Объем двигателя, л</th>
+                    <td>{{ car.engine_volume }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="tab-pane" id="proxies" role="tabpanel">
+            <br/>
+            <table class="table">
+                {% if proxies %}
+                    {% for proxy in proxies %}
+                        <tr>
+                        {% ifchanged proxy.type %}
+                            <th width="400">{{ proxy.get_type_display }}</th>
+                        {% else %}
+                            <th width="400"></th>
+                        {% endifchanged %}
+                            <td>
+                                <a href="{% url 'td:proxy_info' pid=proxy.id %}">{{ proxy.driver.short_name}}</a>
+                                <span class="comment">до {{ proxy.end_date }}</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <b>Нет ни одной актуальной доверенности</b>
+                {% endif %}
+            </table>
+        </div>
+        <div class="tab-pane" id="docs" rolw="tabpanel">
+            <br/>
+            <table class="table ">
+                <tr>
+                    <th>Документ</th>
+                    <th>Номер</th>
+                    <th>Срок действия</th>
+                    <th>Место хранения</th>
+                    <th>Скан</th>
+                </tr>
+                <tr>
+                    <td>ПТС</td>
+                    <td>{{ car.pts_number }}</td>
+                    <td></td>
+                    <td>{{ car.get_pts_place_display }}</td>
+                    <td>{% image_link car.pts_scan %}</td>
+                </tr>
+                <tr>
+                    <td>СТС</td>
+                    <td>{{ car.sts_number }}</td>
+                    <td></td>
+                    <td>{{ car.get_sts_place_display }}</td>
+                    <td>{% image_link car.sts_scan %}</td>
+                </tr>
+                <tr>
+                    <td>Диагностическая карта</td>
+                    <td>{{ car.diag_card_number }}</td>
+                    <td>{% if car.diag_card_date %}{{ car.diag_card_date }}{% endif %}</td>
+                    <td>{{ car.get_diag_card_place_display }}</td>
+                    <td>{% image_link car.diag_card_scan %}</td>
+                </tr>
+                <tr>
+                    <td>Топливная карта</td>
+                    <td>{{ car.fuel_card_number }}</td>
+                    <td>{% if car.fuel_card_date %}{{ car.fuel_card_date }}{% endif %}</td>
+                    <td>{{ car.get_fuel_card_place_display }}</td>
+                    <td>{% image_link car.fuel_card_scan %}</td>
+                </tr>
+                <tr>
+                    <td>Корпоративная карта</td>
+                    <td>{{ car.corp_card_number }}</td>
+                    <td>{% if car.corp_card_date %}{{ car.corp_card_date }}{% endif %}</td>
+                    <td>{{ car.get_corp_card_place_display }}</td>
+                    <td>{% image_link car.corp_card_scan %}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="tab-pane" id="ensurance" role="tabpanel">
+            <br/>
+            <h4>ОСАГО</h4>
+            <table class="table">
+                <tr>
+                    <th width="400">Полис действующий</th>
+                    <td>{{ car.get_osago_display }}</td>
+                </tr>
+                <tr>
+                    <th>Срок действия</th>
+                    <td>{{ car.osago_date }}</td>
+                </tr>
+                <tr>
+                    <th>Страховая компания</th>
+                    <td>{{ car.osago_company }}</td>
+                </tr>
+            </table>
+            <h4>КАСКО</h4>
+            <table class="table">
+                <tr>
+                    <th width="400">Полис действующий</th>
+                    <td>{{ car.get_kasko_display }}</td>
+                </tr>
+                <tr>
+                    <th>Срок действия</th>
+                    <td>{{ car.kasko_date }}</td>
+                </tr>
+                <tr>
+                    <th>Страховая компания</th>
+                    <td>{{ car.kasko_company }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="tab-pane" id="to" role="tabpanel">
+            <br/>
+            <table class="table">
+                <tr>
+                    <th width="400">Пробег между ТО</th>
+                    <td>{{ car.to_mileage }}</td>
+                </tr>
+                <tr><td colspan="2">&nbsp;</td></tr>
+                <tr>
+                    <th>Дата последнего ТО</th>
+                    <td>
+                        {% if last_to.date %}
+                            <a href="{% url 'td:to_info' tid=last_to.id %}">{{ last_to.date }}</a>
+                        {% else %}
+                            <a href="{% url 'td:to_new' %}?car={{ car.id }}" class="btn btn-sm btn-secondary">+ добавить ТО</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Пробег</th>
+                    <td>{{ last_to.mileage }}</td>
+                </tr>
+                <tr><td colspan="2">&nbsp;</td></tr>
+                <tr>
+                    <th>Следующее ТО</th>
+                    <td>
+                        {% if next_to %}
+                            <a href="{% url 'td:to_info' tid=next_to.id %}">{{ next_to.date }}</a>
+                        {% else %}
+                            <a href="{% url 'td:to_new' %}?car={{ car.id }}" class="btn btn-sm btn-secondary">+ добавить ТО</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Пробег</th>
+                    <td>{% if next_to %}{{ next_to.mileage }}{% endif %}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="tab-pane" id="tires" role="tabpanel">
+            <br/>
+            <table class="table">
+                <tr>
+                    <th width="400">Место хранения колес</th>
+                    <td>{{ car.get_tires_storage_display }}</td>
+                </tr>
+                <tr>
+                    <th>Летние колеса, наличие</th>
+                    <td>{{ car.get_tires_summer_state_display }}</td>
+                </tr>
+                <tr>
+                    <th>Летние колеса, срок действия</th>
+                    <td>{{ car.tires_summer_date}}</td>
+                </tr>
+                <tr>
+                    <th>Зимние колеса, наличие</th>
+                    <td>{{ car.get_tires_winter_state_display }}</td>
+                </tr>
+                <tr>
+                    <th>Зимние колеса, срок действия</th>
+                    <td>{{ car.tires_winter_date }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="tab-pane" id="passes" role="tabpanel">
+            <br/>
+            <table class="table">
+                <tr>
+                    <th width="550">Количество пропусков <span class="comment">по данным учета администрации</span></th>
+                    <td>{{ car.pass_card_adm }}</td>
+                </tr>
+                <tr>
+                    <th>Количество пропусков <span class="comment">фактическое наличие</span></th>
+                    <td>{{ car.pass_card_fact }}</td>
+                </tr>
+                <tr>
+                    <th>Количество ключ-карт <span class="comment">по данным учета администрации</span></th>
+                    <td>{{ car.key_card_adm }}</td>
+                </tr>
+                <tr>
+                    <th>Количество ключ-карт <span class="comment">фактическое наличие</span></th>
+                    <td>{{ car.key_card_fact }}</td>
+                </tr>
+                <tr>
+                    <th>VIP-пропуск</th>
+                    <td>
+                        {% if car.vip_pass %}
+                            Есть
+                        {% else %}
+                            Нет
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Пропуск на паркинг</th>
+                    <td>{{ car.parking_pass }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="tab-pane" id="rent" role="tabpanel">
+            <br/>
+            <table class="table">
+                <tr>
+                    <th width="550">Тип собственности</th>
+                    <td>{{ car.get_ownership_type_display }}</td>
+                </tr>
+                <tr>
+                    <th>Договор аренды автотранспортного средства без экипажа</th>
+                    <td>{{ car.get_rent_contract_display }}</td>
+                </tr>
+                <tr>
+                    <th>Договор на предоставление информационных, диспетчерских и технологических услуг</th>
+                    <td>{{ car.get_rent_contract2_display }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'td/js/car_info.js' %}"></script>
+{% endblock %}

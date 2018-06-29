@@ -1,0 +1,19 @@
+<div class="btn-group btn-group-sm">
+    {% if list.has_previous %}
+        <a href="?page=1" class="btn btn-secondary"> <i class="fa fa-step-backward vertical-middle" aria-hidden="true"></i> </a>
+    {% endif %}
+
+    {% if list.has_previous %}
+        <a href="?page={{ list.previous_page_number }}" class="btn btn-secondary"> <i class="fa fa-caret-left vertical-middle" aria-hidden="true"></i> </a>
+    {% endif %}
+
+    <button class="btn btn-secondary">{{ list.start_index }}-{{ list.end_index }} из {{ list.paginator.count }}</button>
+
+    {% if list.has_next %}
+        <a href="?page={{ list.next_page_number }}" class="btn btn-secondary"> <i class="fa fa-caret-right vertical-middle" aria-hidden="true"></i> </a>
+    {% endif %}
+
+    {% if list.has_next %}
+        <a href="?page={{ list.paginator.num_pages }}" class="btn btn-secondary"> <i class="fa fa-step-forward vertical-middle" aria-hidden="true"></i> </a>
+    {% endif %}
+</div>

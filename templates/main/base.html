@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block sidenav %}
+<ul class="nav flex-column">
+    <li><p class="text-muted">Основные элементы</p></li>
+    <li class="nav-item"><a href="{% url 'main:department_list' %}">Подразделения</a></li>
+    <li class="nav-item"><a href="{% url 'main:employee_list' %}">Сотрудники</a></li>
+    <li class="nav-item"><a href="{% url 'main:contact_list' %}">Контакты</a></li>
+</ul>
+{% endblock %}
+{% block nav-header %}АО{% endblock %}
+
+{% block styles %}
+    <!--<link rel="stylesheet" href="{% static 'td/css/transport.css' %}">-->
+{% endblock %}

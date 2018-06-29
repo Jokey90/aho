@@ -1,0 +1,66 @@
+{% extends 'td/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <a href="{% url 'td:penalty_new' %}" class="btn btn-sm btn-warning">Добавить штраф</a>
+    {% if show_all %}
+        <a href="{% url 'td:penalty_list' %}" class="btn btn-sm btn-secondary">Скрыть оплаченные</a>
+    {% else %}
+        <a href="{% url 'td:penalty_list_all' %}" class="btn btn-sm btn-secondary">Показать все</a>
+    {% endif %}
+    {% paginator penalties %}
+{% endblock %}
+{% block body %}
+    <table class="table table-hover table-sm">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Автомобиль</th>
+                <th>Водитель</th>
+                <th>Номер штрафа</th>
+                <th>Нарушение</th>
+                <th>Сумма</th>
+                <th>Передан водителю</th>
+                <th>Оплачен</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for penalty in penalties %}
+            <tr>
+                <td>
+                    <a href="{% url 'td:penalty_info' pid=penalty.id %}">{{ penalty.date|date:"d.m.Y" }}</a>
+                </td>
+                <td>
+                    <a href="{% url 'td:car_info' cid=penalty.car.id %}">{{ penalty.car.name }}</a><br/><span class="comment">{{ penalty.car.number }}</span>
+                </td>
+                <td>
+                    {% if penalty.driver %}
+                        <a href="{% url 'td:driver_info' did=penalty.driver.id %}">{{ penalty.driver}}</a>
+                    {% endif  %}
+                </td>
+                <td>
+                    {{ penalty.number}}
+                </td>
+                <td>
+                    {{ penalty.description }}
+                </td>
+                <td>
+                    {{ penalty.amount }}
+                </td>
+                <td>
+                    {% if penalty.obtain_date %}{{ penalty.obtain_date|date:"d.m.Y" }}{% endif %}
+                </td>
+                <td>
+                    {% if penalty.payed %}Да{% else %}Нет{% endif %}
+                </td>
+                <td width="10%">
+                    <a href='{% url 'td:penalty_edit' pid=penalty.id %}' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    <button onclick="if(confirm('Удалить безвозвратно?')){location.href='{% url 'td:penalty_delete' pid=penalty.id %}';}"
+                       class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

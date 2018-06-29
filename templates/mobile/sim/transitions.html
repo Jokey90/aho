@@ -1,0 +1,31 @@
+{% extends 'mobile/sim/info_base.html' %}
+{% load extra_tags %}
+{% block info_container %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Дата передачи</th>
+                <th>Старый владелец</th>
+                <th> </th>
+                <th>Новый владелец</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transition in transitions %}
+                <tr>
+                    <td>{{ transition.date }}</td>
+                    <td>{{ transition.prev_owner|empty }}</td>
+                    <td><i class="fa fa-long-arrow-right" aria-hidden="true"></i></td>
+                    <td>{{ transition.employee }}</td>
+                    <td>
+                        <a href="{% url 'mobile:transition_edit' uid=transition.id %}" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
+                        <a href="{% url 'mobile:transition_delete' uid=transition.id %}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br/>
+    <a href="{% url 'mobile:transition_new' uid=sim.id %}" class="btn btn-secondary">Передать</a>
+{% endblock %}

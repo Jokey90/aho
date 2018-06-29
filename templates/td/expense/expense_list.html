@@ -1,0 +1,52 @@
+{% extends 'td/base.html' %}
+{% block content_header %}
+    <a href="{% url 'td:expense_new' %}" class="btn btn-sm btn-warning">Добавить расход</a>
+    {% if request.user.is_superuser %}
+        <a href="{% url 'td:expense_list'  %}?all=1" class="btn btn-sm btn-secondary">Показать все</a>
+    {% endif %}
+{% endblock %}
+{% block body %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Автомобиль</th>
+                <th>Водитель</th>
+                <th>Статья</th>
+                <th>Сумма</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for expense in expenses %}
+            <tr>
+                <td>
+                    <a href="{% url 'td:expense_info' eid=expense.id %}">{{ expense.date}}</a>
+                </td>
+            <td>
+                {{ expense.car.name }} <span class="comment">{{ expense.car.number }}</span>
+            </td>
+            <td>
+                {{ expense.driver.emp.short_name }}
+            </td>
+            <td>
+                {{ expense.budget_subitem.name }}
+            </td>
+            <td>
+                {{ expense.amount }} руб.
+            </td>
+                <td width="10%">
+                    <a href='{% url 'td:expense_edit' eid=expense.id %}' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    {% if request.user.is_superuser %}
+                        {% if expense.active %}
+                            <a href='{% url 'td:expense_delete' eid=expense.id %}' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></a>
+                        {% else %}
+                            <a href='{% url 'td:expense_delete' eid=expense.id %}' class="btn btn-sm btn-warning" title="восстановить"><i class="fa fa-refresh"></i></a>
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

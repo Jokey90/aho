@@ -1,0 +1,20 @@
+{% extends 'service/base.html' %}
+{% load extra_tags %}
+{% block main %}
+    <form class="form" enctype="multipart/form-data"  action="" method="post">
+        {% csrf_token %}
+        <h3>{{ value.row.zone.name }} - {{ value.row.name }}</h3><br/>
+        <table class="table table-mobile">
+            <tr>
+                <th width="300">Дата обхода:</th>
+                <td>{{ value.checklist.date|date:"d.m.Y" }}</td>
+            </tr>
+            <tr>
+                <th>Этаж:</th>
+                <td>{{ value.checklist.floor.name }}</td>
+            </tr>
+            {% table_form form %}
+        </table>
+        <input type="submit" value="Изменить" class="btn btn-success" />
+    </form>
+{% endblock %}

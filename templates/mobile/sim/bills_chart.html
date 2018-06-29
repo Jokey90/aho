@@ -1,0 +1,25 @@
+{% extends 'mobile/sim/info_base.html' %}
+{% load extra_tags %}
+{% load staticfiles %}
+{% block info_container %}
+    <a class="btn btn-secondary btn-sm" href="{% url 'mobile:sim_bills' uid=sim.id %}"><i class="fa fa-list" aria-hidden="true"></i> Список</a>
+    <form class="form-inline form" action="" style="display: inline-block;">
+        Год: {{ form.year }}
+        <input class="btn btn-sm btn-secondary" type="submit" value="выбрать"/>
+    </form>
+    <br/><br/>
+    <h4>График расходов и лимитов</h4>
+
+    <svg width="1000" height="550"></svg>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'vendor/js/d3.min.js' %}"></script>
+    <script>
+        var chart_data = JSON.parse('{{ data|escapejs }}');
+    </script>
+    <script src="{% static 'mobile/js/sim_bills_chart.js' %}"></script>
+{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'mobile/css/sim_bills_chart.css' %}">
+{% endblock %}

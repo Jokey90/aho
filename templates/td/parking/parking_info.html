@@ -1,0 +1,51 @@
+{% extends 'td/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <a href="{% url 'td:parking_edit' pid=parking.id %}" class="btn btn-sm btn-primary">Редактировать</a>
+    <a href="{% url 'td:parking_delete' pid=parking.id %}" class="btn btn-sm btn-danger">Удалить</a>
+{% endblock %}
+
+{% block body %}
+    <br/>
+    <h3><i class="fa fa-stop-circle"></i> Парковочное место № {{ parking.number }}</h3>
+    <br/>
+    <table class="table">
+        <tr>
+            <td>{% get_label parking 'car_name' %}</td>
+            <td>{{ parking.car_name }}</td>
+        </tr>
+        <tr>
+            <td>{% get_label parking 'owner' %}</td>
+            <td>{{ parking.owner.short_name }}</td>
+        </tr>
+        <tr>
+            <td>{% get_label parking 'payment_type' %}</td>
+            <td>{{ parking.get_payment_type_display }}</td>
+        </tr>
+        <tr>
+            <td>{% get_label parking 'contract' %}</td>
+            <td>{{ parking.contract }}</td>
+        </tr>
+        <tr>
+            <td>{% get_label parking 'contract_date' %}</td>
+            <td>{{ parking.contract_date|empty }}</td>
+        </tr>
+        <tr>
+            <td>{% get_label parking 'floor_number' %}</td>
+            <td>{{ parking.floor_number }}</td>
+        </tr>
+        <tr>
+            <td>{% get_label parking 'grade' %}</td>
+            <td>{{ parking.grade|empty }}</td>
+        </tr>
+        <tr>
+            <td>{% get_label parking 'basis' %}</td>
+            <td>{{ parking.basis|empty }}</td>
+        </tr>
+        <tr>
+            <td>{% get_label parking 'comment' %}</td>
+            <td>{{ parking.comment|empty }}</td>
+        </tr>
+    </table>
+{% endblock %}

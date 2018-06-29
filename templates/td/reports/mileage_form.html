@@ -1,0 +1,12 @@
+{% extends 'td/base.html' %}
+{% load extra_tags %}
+{% block body %}
+    {% include 'canedar_static.html' %}
+    <form class="form" action="" method="post">
+        {% csrf_token %}
+        <h3>Отчет по затратам на топливо относительно пройденных км</h3><br/>
+        {% table_form form %}
+        <button type="submit" class="btn btn-outline-info" formaction="web/"><i class="fa fa-desktop"></i> Просмотр</button>
+        <button type="submit" class="btn btn-outline-success" formaction="xls/"><i class="fa fa-file-excel-o"></i> Выгрузить</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'main/base.html' %}
+{% block content_header %}
+    <h3>Подразделения</h3>
+    {% if request.user.is_superuser %}
+        <span>
+            <a href="{% url 'main:department_list'  %}?all=1" class="btn btn-sm btn-secondary">Показать все</a>
+            <a href="{% url 'main:dvsync' %}" class="btn btn-sm btn-secondary">Синхронизировать с DV</a>
+        </span>
+    {% endif %}
+    <span>
+        <a href="{% url 'main:department_new' %}" class="btn btn-sm btn-warning">Создать подразделение</a>
+    </span>
+{% endblock %}
+{% block body %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Название подразделения</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for dep in deps %}
+            <tr>
+                <td>
+                    {% for lvl in dep.level %}<span class="tree-padding"></span>{% endfor %}<a href="{% url 'main:department_info' did=dep.id %}">{{ dep.name }}</a>
+                    {% if dep.description %}
+                        <span class="comment">({{ dep.description }})</span>
+                    {% endif %}
+                </td>
+                <td width="10%">
+                    <a href='{% url 'main:department_edit' did=dep.id %}' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    {% if request.user.is_superuser %}
+                        {% if dep.active %}
+                            <a href='{% url 'main:department_delete' did=dep.id %}' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></a>
+                        {% else %}
+                            <a href='{% url 'main:department_delete' did=dep.id %}' class="btn btn-sm btn-warning" title="восстановить"><i class="fa fa-refresh"></i></a>
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'td/base.html' %}
+{% load extra_tags %}
+{% block content_header %}
+    <a href="{% url 'td:proxy_new' %}" class="btn btn-sm btn-warning">Добавить доверенность</a>
+    {% if show_inactive %}
+        <a href="{% url 'td:proxy_list'  %}" class="btn btn-sm btn-secondary">Показать активные</a>
+    {% else %}
+        <a href="{% url 'td:proxy_list_inactive'  %}" class="btn btn-sm btn-secondary">Показать неактивные</a>
+    {% endif %}
+{% endblock %}
+{% block body %}
+    <table class="table table-hover table-sm">
+        <thead>
+            <tr>
+                <th>Тип доверенности</th>
+                <th>Водитель</th>
+                <th>Автомобиль</th>
+                <th>Срок</th>
+                <th>Владелец</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for proxy in proxies %}
+            <tr>
+                <td>
+                    <a href="{% url 'td:proxy_info' pid=proxy.id %}">{{ proxy.get_type_display }}</a>
+                </td>
+                <td>
+                    <a href="{% url 'td:driver_info' did=proxy.driver_id %}">{{ proxy.driver }}</a>
+                </td>
+                <td>
+                    <a href="{% url 'td:car_info' cid=proxy.car_id %}">{{ proxy.car }}</a>
+                </td>
+                <td>
+                    {{ proxy.start_date|date:"d.m.Y" }} - {{ proxy.end_date|expire:30|empty }}
+                </td>
+                <td>
+                    {% if proxy.current_owner %}
+                        <a href="{% url 'td:driver_info' did=proxy.current_owner.id %}">{{ proxy.current_owner }}</a>
+                    {% else %}
+                        нет
+                    {% endif %}
+                </td>
+                <td width="130">
+                    <a href='{% url 'td:proxy_tracking_new' pid=proxy.id %}?return=proxy_list' class="btn btn-sm btn-secondary" title="передать"><i class="fa fa-exchange"></i></a>
+                    <a href='{% url 'td:proxy_edit' pid=proxy.id %}?return=proxy_list' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    {% if proxy.active %}
+                        <a href='{% url 'td:proxy_delete' pid=proxy.id %}?return=proxy_list' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></a>
+                    {% else %}
+                        <a href='{% url 'td:proxy_delete' pid=proxy.id %}?return=proxy_list' class="btn btn-sm btn-warning" title="удалить"><i class="fa fa-refresh"></i></a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

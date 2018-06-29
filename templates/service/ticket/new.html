@@ -1,0 +1,16 @@
+{% extends 'service/base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+{% block main %}
+
+    <form class="form" enctype="multipart/form-data" action="" method="post">
+        {% csrf_token %}
+        <h3>Новая заявка</h3><br/>
+        <table class="table table-mobile">
+            {% table_form form %}
+        </table>
+        <div class="alert alert-warning">При создании заявки будет автоматически отправлено письмо выбранному провайдеру услуг!</div>
+        <br/><br/>
+        <input type="submit" value="Добавить" class="btn btn-success" />
+    </form>
+{% endblock %}

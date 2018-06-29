@@ -1,0 +1,24 @@
+{% extends 'td/car/car_edit_base.html' %}
+{% load staticfiles %}
+{% block form %}
+    {{ form.media }}
+    <form class="form" action="" id="car" method="post"  enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <table class="table">
+            <tr><th colspan="2">ОСАГО</th></tr>
+            {% with form.osago_number as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.osago_date as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.osago_company as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.osago_place as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.osago_scan as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            <tr><th colspan="2">КАСКО</th></tr>
+            {% with form.kasko_number as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.kasko_date as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.kasko_company as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.kasko_place as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.kasko_scan as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+        </table>
+
+    </form>
+{% endblock %}

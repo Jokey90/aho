@@ -1,0 +1,19 @@
+{% extends 'td/car/car_info_base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block info_container %}
+    <table class="table">
+        <tr><th width="400">Колеса</th><td><a href="{% url 'td:car_edit_tires' cid=car.id %}" class="btn btn-primary btn-sm">Редактировать</a></td></tr>
+        <tr><td>{% get_label car "tires_storage" %}</td><td>{{ car.get_tires_storage_display }}</td></tr>
+        <tr><td>{% get_label car "tires_comment" %}</td><td>{{ car.tires_comment|empty }}</td></tr>
+        <tr><th colspan="2">Летние</th></tr>
+        <tr><td>{% get_label car "tires_summer_state" %}</td><td>{{ car.get_tires_summer_state_display }}</td></tr>
+        <tr><td>{% get_label car "tires_summer_date" %}</td><td>{{ car.tires_summer_date|empty }}</td></tr>
+        <tr><td>{% get_label car "tires_summer_photo" %}</td><td>{% image_link car.tires_summer_photo %}</td></tr>
+        <tr><th colspan="2">Зимние</th></tr>
+        <tr><td>{% get_label car "tires_winter_state" %}</td><td>{{ car.get_tires_winter_state_display }}</td></tr>
+        <tr><td>{% get_label car "tires_winter_date" %}</td><td>{{ car.tires_winter_date|empty }}</td></tr>
+        <tr><td>{% get_label car "tires_winter_photo" %}</td><td>{% image_link car.tires_winter_photo %}</td></tr>
+    </table>
+{% endblock %}

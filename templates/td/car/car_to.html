@@ -1,0 +1,35 @@
+{% extends 'td/car/car_info_base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block info_container %}
+    <h4>
+        История тех. обслуживания
+        <a href="{% url 'td:to_new' %}?car={{ car.id }}&return=car_to" class="btn btn-sm btn-success">Добавить ТО</a>
+    </h4>
+    <table class="table table-hover table-xs">
+        <tr>
+            <th>Дата</th>
+            <th>Название</th>
+            <th>Бюджет</th>
+            <th>Факт</th>
+            <th>Пробег</th>
+            <th>Комментарий</th>
+            <th width="70">Действия</th>
+        </tr>
+        {% for to in to_list %}
+            <tr>
+                <td><a href="{% url 'td:to_info' tid=to.id %}">{{ to.date|date:"d.m.Y"  }}</a></td>
+                <td>{{ to.name }}</td>
+                <td>{{ to.budget_amount|rub }}</td>
+                <td>{{ to.fact_amount|rub }}</td>
+                <td>{{ to.mileage|num:0 }}</td>
+                <td>{{ to.comment|empty }}</td>
+                <td>
+                    <a href='{% url 'td:to_edit' tid=to.id %}?return=car_to' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    <button onclick='confirm_delete("{% url 'td:to_delete' tid=to.id %}?return=car_to");' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

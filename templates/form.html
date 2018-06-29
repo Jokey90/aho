@@ -1,0 +1,15 @@
+{% if not rows_only %}<table class="table table-mobile">{% endif %}
+{% for field in form %}
+    <tr>
+        <th width="300">{{ field.label_tag }}</th>
+        <td class="align-left">
+            {{ field }}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <span class="form-error">{{ error }}</span>
+                {% endfor %}
+            {% endif %}
+        </td>
+    </tr>
+{% endfor %}
+{% if not rows_only %}</table>{% endif %}

@@ -1,0 +1,49 @@
+{% extends 'td/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <a href="{% url 'td:key_new' %}" class="btn btn-sm btn-warning">Добавить ключ/пропуск</a>
+{% endblock %}
+{% block body %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Тип</th>
+                <th>Автомобиль</th>
+                <th>Номер</th>
+                <th>Владелец</th>
+                <th>Скан</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for key in keys %}
+            <tr>
+                <td><a href="{% url 'td:key_info' kid=key.id %}">{{ key.get_type_display }}</a></td>
+                <td><a href="{% url 'td:car_info' cid=key.car.id %}">{{ key.car }}</a></td>
+                <td>{{ key.number}}</td>
+                <td><a href="{% url 'main:employee_info' eid=key.owner.id %}">{{ key.owner }}</a></td>
+                <td>{% image_link key.scan %}</td>
+
+                <td width="10%">
+                    <a href='{% url 'td:key_edit' kid=key.id %}' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    <button onclick="if(confirm('Удалить безвозвратно?')){location.href='{% url 'td:key_delete' kid=key.id %}';}"
+                       class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if mileages.has_other_pages %}
+        {% if mileages.has_previous %}
+            <a class="btn btn-secondary" href="?page={{ mileages.previous_page_number }}"><</a>
+        {% endif %}
+        <span class="current">
+            стр {{ mileages.number }} из {{ mileages.paginator.num_pages }}.
+        </span>
+        {% if mileages.has_next %}
+            <a class="btn btn-secondary" href="?page={{ mileages.next_page_number }}">></a>
+        {% endif %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,34 @@
+<div class="notification-box">
+    <div class="marker {{ warning.style }}">
+        {{ warning.date|date:'d.m.y' }}
+    </div>
+    <div class="content">
+        <div class="notification-header">{{ warning.title }}</div>
+        <div class="notification-body">
+            {{ warning.text }}
+        </div>
+    </div>
+    <div class="actions">
+        {% if warning.type == 'no_proxy' %}
+            <a href="{% url 'td:proxy_new' %}?car={{ warning.car_id }}">Выдать новую</a>
+        {% elif warning.type == 'proxy_ending' %}
+            <a href="{% url 'td:proxy_info' pid=warning.proxy_id %}">Инфо</a>
+            <a href="{% url 'td:proxy_new' %}?car={{ warning.car_id }}">Выдать новую</a>
+        {% elif warning.type == 'license_ending' %}
+            <a href="{% url 'td:driver_info' did=warning.driver_id %}">Инфо</a>
+        {% elif warning.type == 'item_ending' %}
+            <a href="{% url 'td:item_info' iid=warning.item_id %}">Инфо</a>
+            <a href="{% url 'td:car_info' cid=warning.car_id %}">Автомобиль</a>
+        {% elif warning.type == 'tires_ending' %}
+            <a href="{% url 'td:car_tires' cid=warning.car_id %}">Инфо</a>
+            <a href="{% url 'td:car_edit_tires' cid=warning.car_id %}">Редактровать</a>
+        {% elif warning.type == 'to_coming' %}
+            <a href="{% url 'td:to_info' tid=warning.to_id %}">Инфо</a>
+        {% elif warning.type == 'to_missed' %}
+            {% if warning.next_to %}
+                <a href="{% url 'td:to_info' tid=warning.next_to.id %}">Инфо</a>
+            {% endif %}
+            <a href="{% url 'td:to_new' %}?car={{ warning.car_id }}">Добавить ТО</a>
+        {% endif %}
+    </div>
+</div>

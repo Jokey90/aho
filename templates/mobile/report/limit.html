@@ -1,0 +1,53 @@
+{% extends 'mobile/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <h3>
+        <i class="fa fa-file"></i> Отчет по сравнению месячных лимитов за {% month month %} {{ year }}
+    </h3>
+{% endblock %}
+
+{% block body %}
+    <table class="table table-xs table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Номер</th>
+                <th width="250">Владелец {{ year_past }}</th>
+                <th>Факт {{ year_past }}</th>
+                <th>Лимит {{ year_past }}</th>
+                <th width="250">Владелец {{ year }}</th>
+                <th>Факт {{ year }}</th>
+                <th>Лимит {{ year }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in table %}
+                <tr>
+                    <td>{{ row.number }}</td>
+                    <th>{{ row.owner_past }}</th>
+                    <td {% if row.bill_past > row.limit_past %} style="color: #F00;" {% endif %}>
+                        {{ row.bill_past|floatformat:"2" }}
+                    </td>
+                    <td>
+                        {% if row.limit_past is not None %}
+                            {{ row.limit_past }}
+                        {% else %}
+                            Безлимит
+                        {% endif %}
+                    </td>
+                    <th>{{ row.owner_now }}</th>
+                    <td {% if row.bill_now > row.limit_now %} style="color: #F00;" {% endif %}>
+                        {{ row.bill_now|floatformat:"2" }}
+                    </td>
+                    <td>
+                        {% if row.limit_now is not None %}
+                            {{ row.limit_now }}
+                        {% else %}
+                            Безлимит
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

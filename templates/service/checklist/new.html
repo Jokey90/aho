@@ -1,0 +1,59 @@
+{% extends 'service/base.html' %}
+{% load staticfiles %}
+
+{% block content_header %}
+    <h3>Чек лист обхода помещений</h3>
+    <input type="submit" value="Сохранить" form="form" class="btn btn-sm btn-success" />
+{% endblock %}
+
+{% block main %}
+    {% include 'canedar_static.html' %}
+    <form id='form' class="form" action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table class="table">
+            {% for field in checklist_form %}
+                <tr>
+                    <td width="40%">{{ field.label_tag }}</td>
+                    <td>
+                        {{ field }}
+                        {% if field.errors %}
+                            <br/> {{ field.errors }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {{ management_form }}
+        {% regroup formset by zone as rows_by_zone %}
+        <table class="table table-xs">
+            <thead>
+                <tr class="table-info">
+                    <th width="200">Зона контроля</th>
+                    <th width="50">Наличие замечаний</th>
+                    <th>Примечание</th>
+                    <th width="50">Фото замечания</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rowset in rows_by_zone %}
+                    <tr>
+                        <th colspan="6" class="table-warning">{{ forloop.counter }}. {{ rowset.grouper }}</th>
+                    </tr>
+                    {% for row in rowset.list %}
+                        <tr>
+                            <td>{{ forloop.parentloop.counter }}.{{ forloop.counter }}. {{ row.name }} {{ row.form.row }} {{ row.form.id }}</td>
+                            <td class="header">{{ row.form.has_issues }}</td>
+                            <td>{{ row.form.comment }}</td>
+                            <td class="header">{{ row.form.photo }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+        <input type="submit" value="Сохранить" class="btn btn-success" />
+        <br/><br/>
+    </form>
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'service/js/fileupload.js' %}"></script>
+{% endblock %}

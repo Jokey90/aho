@@ -1,0 +1,11 @@
+{% extends 'mobile/base.html' %}
+{% load extra_tags %}
+{% block body %}
+    {% include 'canedar_static.html' %}
+    <form class="form" action="" method="post">
+        {% csrf_token %}
+        <h3>Редактрование тарифа</h3><br/>
+        {% table_form form %}
+        <input type="submit" value="Сохранить" class="btn btn-success" />
+    </form>
+{% endblock %}

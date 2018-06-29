@@ -1,0 +1,72 @@
+{% extends 'service/base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <h3>
+            {{ ticket.subject }}
+        </h3>
+        {% if request.user.is_superuser %}
+            <span>
+                <a href="{% url 'service:ticket_edit' uid=ticket.id %}" class="btn btn-sm btn-info">Редактировать</a>
+            </span>
+        {% endif %}
+        {% if ticket.close_date is None %}
+            <span>
+                {% if not ticket.mail_sent %}
+                    <a href="{% url 'service:ticket_resend_email' uid=ticket.id %}" class="btn btn-sm btn-outline-danger">Отправить письмо заново</a>
+                {% endif %}
+                <a href="{% url 'service:ticket_close' uid=ticket.id %}" class="btn btn-sm btn-success">Закрыть</a>
+            </span>
+        {% endif %}
+{% endblock %}
+
+{% block main %}
+    <br/>
+    <table class="table table-mobile">
+        <tr>
+            <th width="250">Статус заявки: </th>
+            <td>
+                {% if ticket.close_date %}
+                    Закрыта
+                {% else %}
+                    В работе
+                {% endif %}
+            </td>
+        </tr>
+        {% if ticket.close_date %}
+            <tr>
+                <th>Дата закрытия: </th>
+                <td>{{ ticket.close_date|date:"d.m.Y" }}</td>
+            </tr>
+        {% endif %}
+        <tr>
+            <th>Дата создания: </th>
+            <td>{{ ticket.creation_datetime|date:'d.m.Y H:i:s' }}</td>
+        </tr>
+        <tr>
+            <th>Служба: </th>
+            <td>{{ ticket.provider.name }} (<a href="tel:{{ ticket.provider.contact.phone_number }}">{{ ticket.provider.contact.phone_number }}</a>)</td>
+        </tr>
+        {% if ticket.issue %}
+            <tr>
+                <th>Замечание: </th>
+                <td>
+                    <a href="{% url 'service:checklist_value_info' uid=ticket.issue.id %}">{{ ticket.issue }}</a>
+                    {% if ticket.issue.photo %}
+                        ({% image_link ticket.issue.photo 'Фото замечания' %})
+                    {% endif %}
+                </td>
+            </tr>
+        {% endif %}
+        <tr>
+            <th>Текст заявки: </th>
+            <td>{{ ticket.text|linebreaks }}</td>
+        </tr>
+        {% if ticket.photo %}
+            <th>Прикрепленное фото: </th>
+            <td>{% image_link ticket.photo %}</td>
+        {% endif %}
+    </table>
+
+{% endblock %}

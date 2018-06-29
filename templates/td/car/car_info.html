@@ -1,0 +1,37 @@
+{% extends 'td/car/car_info_base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block info_container %}
+    <table class="table">
+        <tr>
+            <th width="400">Основная информация</th>
+            <td><a href="{% url 'td:car_edit_info' cid=car.id %}" class="btn btn-primary btn-sm">Редактировать</a></td>
+        </tr>
+        <tr><td>{% get_label car "name" %}</td><td>{{ car.name }}</td></tr>
+        <tr><td>{% get_label car "number" %}</td><td>{{ car.number }}</td></tr>
+        <tr><td>{% get_label car "vin" %}</td><td>{{ car.vin|empty }}</td></tr>
+        <tr><td>{% get_label car "description" %}</td><td>{{ car.description|empty }}</td></tr>
+        <tr>
+            <td>{% get_label car "owner" %}</td>
+            <td>
+                {% if car.owner %}
+                    <a href="{% url 'main:employee_info' eid=car.owner.id %}">{{ car.owner.short_name }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr><td>{% get_label car "release_year" %}</td><td>{{ car.release_year|empty }}</td></tr>
+        <tr><td>{% get_label car "power" %}</td><td>{{ car.power|empty }}</td></tr>
+        <tr><td>{% get_label car "engine_volume" %}</td><td>{{ car.engine_volume|empty }}</td></tr>
+        <tr><td>{% get_label car "to_mileage" %}</td><td>{{ car.to_mileage|empty }}</td></tr>
+        <tr><td>{% get_label car "mileage_limit" %}</td><td>{{ car.mileage_limit|empty }}</td></tr>
+        <tr><td>{% get_label car "vip_pass" %}</td><td>{{ car.vip_pass|boolean }}</td></tr>
+        <tr><td>{% get_label car "alarm_number" %}</td><td>{{ car.alarm_number|empty }}</td></tr>
+        <tr><td>{% get_label car "alarm_sim_number" %}</td><td>{{ car.alarm_sim_number|empty }}</td></tr>
+
+        <!--<tr><th colspan="2">Информация об аренде</th></tr>-->
+        <tr><td>{% get_label car "ownership_type" %}</td><td>{{ car.get_ownership_type_display }}</td></tr>
+        <tr><td>{% get_label car "rent_contract" %}</td><td>{{ car.get_rent_contract_display }}</td></tr>
+        <tr><td>{% get_label car "rent_contract2" %}</td><td>{{ car.get_rent_contract2_display }}</td></tr>
+    </table>
+{% endblock %}

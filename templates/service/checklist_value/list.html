@@ -1,0 +1,96 @@
+{% extends 'service/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <h3>{{ title }}</h3>
+    {% paginator checklist_values %}
+{% endblock %}
+
+{% block main %}
+    {% if is_mobile %}
+        {% for value in checklist_values %}
+            <div class="card-list-item">
+                <div class="header">
+                    {% if value.solve_date %}
+                        <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                    {% else %}
+                        <i class="fa fa-square-o" aria-hidden="true"></i>
+                    {% endif %}
+                    <a href="{% url 'service:checklist_value_info' uid=value.id %}">{{ value.row.zone }} - {{ value.row.name }}</a>
+                </div>
+                <div class="body">
+                    {{ value.checklist.date|date:"d.m.Y" }} - {{ value.checklist.floor }}
+                </div>
+                <div class="footer">
+                    <a class="btn btn-sm btn-secondary" href="{% url 'service:checklist_info' uid=value.checklist_id %}" title="Просмотр отчета">
+                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                    </a>
+                    <a class="btn btn-sm btn-info" href="{% url 'service:checklist_value_edit' uid=value.id %}?return=checklist_value_list" title="Редактировать">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a>
+                    {% if value.solve_date is None %}
+                        <a class="btn btn-sm btn-success" href="{% url 'service:checklist_value_solve' uid=value.id %}?return=checklist_value_list" title="Устранить сейчас">
+                            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                        </a>
+                        {% if not value.has_ticket %}
+                            <a class="btn btn-sm btn-warning" href="{% url 'service:ticket_new' %}?issue_id={{ value.id }}" title="Создать заявку">
+                                <i class="fa fa-ticket" aria-hidden="true"></i>
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <table class="table table-xs">
+            <thead>
+                <tr>
+                    <th>Устранено</th>
+                    <th>Дата</th>
+                    <th>Этаж</th>
+                    <th>Зона контроля</th>
+                    <th>Дата устранения</th>
+                    <th width="150">Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for value in checklist_values %}
+                <tr>
+                    <td>
+                        {% if value.solve_date %}
+                            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                        {% else %}
+                            <i class="fa fa-square-o" aria-hidden="true"></i>
+                        {% endif %}
+                    </td>
+                    <td>{{ value.checklist.date|date:"d.m.Y" }}</td>
+                    <td>{{ value.checklist.floor }}</td>
+                    <td><a href="{% url 'service:checklist_value_info' uid=value.id %}">{{ value.row.zone }} - {{ value.row.name }}</a></td>
+                    <td>{{ value.solve_date|date:"d.m.Y" }}</td>
+                    <td>
+                        <a class="btn btn-sm btn-secondary" href="{% url 'service:checklist_info' uid=value.checklist_id %}" title="Просмотр отчета">
+                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                        </a>
+                        <a class="btn btn-sm btn-info" href="{% url 'service:checklist_value_edit' uid=value.id %}?return=checklist_value_list" title="Редактировать">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </a>
+                        {% if value.solve_date is None %}
+                            <a class="btn btn-sm btn-success" href="{% url 'service:checklist_value_solve' uid=value.id %}?return=checklist_value_list" title="Устранить сейчас">
+                                <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                            </a>
+                            {% if not value.has_ticket %}
+                                <a class="btn btn-sm btn-warning" href="{% url 'service:ticket_new' %}?issue_id={{ value.id }}" title="Создать заявку">
+                                    <i class="fa fa-ticket" aria-hidden="true"></i>
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    <br/>
+    {% paginator checklist_values %}
+    <br/><br/>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'td/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <a href="{% url 'td:item_edit' iid=item.id %}" class="btn btn-sm btn-primary">Редактировать</a>
+    <a href="{% url 'td:item_tracking_new' iid=item.id %}" class="btn btn-sm btn-secondary">Передать</a>
+    <button onclick="if(confirm('Удалить безвозвратно?')){location.href='{% url 'td:item_delete' iid=item.id %}';}"
+                       class="btn btn-sm btn-danger" title="удалить">Удалить</button>
+{% endblock %}
+
+{% block body %}
+    <br/>
+    <h3>
+        <i class="fa fa-credit-card"></i> {{ item.get_type_display }}
+    </h3>
+    <br/>
+    <table class="table">
+        <tr><td width="400"><b>{% get_label item 'car' %}</b></td><td><a href="{% url 'td:car_info' cid=item.car_id %}">{{ item.car }}</a></td>
+        {% if item.number %}<tr><td><b>{% get_label item 'number' %}</b></td><td>{{ item.number }}</td>{% endif %}
+        <tr>
+            <th>Текущий владелец</th>
+            <td>
+                {% if item.current_owner %}
+                    <a href="{% url 'td:driver_info' did=item.current_owner.id %}">{{ item.current_owner }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% if item.pin %}<tr><td><b>{% get_label item 'pin' %}</b></td><td>{{ item.pin }}</td>{% endif %}
+        {% if item.start_date %}<tr><td><b>{% get_label item 'start_date' %}</b></td><td>{{ item.start_date }}</td>{% endif %}
+        {% if item.end_date %}<tr><td><b>{% get_label item 'end_date' %}</b></td><td>{{ item.end_date }}</td>{% endif %}
+        {% if item.company %}<tr><td><b>{% get_label item 'company' %}</b></td><td>{{ item.company }}</td>{% endif %}
+        {% if item.comment %}<tr><td><b>{% get_label item 'comment' %}</b></td><td>{{ item.comment }}</td>{% endif %}
+        <tr><td><b>{% get_label item 'scan' %}</b></td><td>{% image_link item.scan %}</td>
+    </table>
+    <br/>
+    <h4>История передач</h4>
+    <table class="table">
+        <tr>
+            <th>Дата</th>
+            <th>Кому передано</th>
+            <th>Действия</th>
+        </tr>
+        {% for record in tracking %}
+            <tr>
+                <td>
+                    {{ record.date }}
+                </td>
+                <td>
+                    {% if record.owner %}
+                        <a href="{% url 'td:driver_info' did=record.owner.id %}">{{ record.owner }}</a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href='{% url 'td:item_tracking_edit' tid=record.id %}' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    <button onclick='confirm_delete("{% url 'td:item_tracking_delete' tid=record.id %}");' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

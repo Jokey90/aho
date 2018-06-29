@@ -1,0 +1,22 @@
+{% extends 'mobile/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <h4>
+        <i class="fa fa-gears"></i> Синхронизация с базой MS Access
+    </h4>
+{% endblock %}
+
+{% block body %}
+    {{ message }}<br/>
+    <ul>
+        {% for item in list %}
+            <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+    {% if ok %}
+        <br/><br/>
+        <a href="{% url 'mobile:access_sync' %}" class="btn btn-danger">Начать</a>
+        <br/><span class="comment">Это займет пару минут</span>
+    {% endif %}
+{% endblock %}

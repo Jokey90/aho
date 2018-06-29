@@ -1,0 +1,53 @@
+{% extends 'mobile/base.html' %}
+{% load extra_tags %}
+{% block main %}
+    <div class="object-header">
+        <h3>
+            <i class="fa fa-file"></i> Отчет по мобильной связи за {% month month %} {{ year }}
+        </h3>
+    </div>
+    <table class="table table-sm table-bordered">
+        <thead>
+            <tr>
+                <th width="250">Сотрудник</th>
+                <th>Группа</th>
+                <th>Номер</th>
+                <th>Договор</th>
+                <th>Лимит</th>
+                <th>Факт без НДС</th>
+                <th>Факт с НДС</th>
+                <th>Экономия</th>
+                <th>Перерасход</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in table %}
+                {% ifchanged row.dep_name %}
+                    {% if row.dep_level == 0 %}
+                        <tr class="table-info">
+                    {% else %}
+                        <tr class="table-warning">
+                    {% endif %}
+                        <th colspan="4">{% for lvl in row.dep_levels %}<span class="tree-padding"></span>{% endfor %}{{ row.dep_name }}</th>
+                        <th>{{ row.dep_limit }}</th>
+                        <th>{{ row.dep_amount_nonds|floatformat:"2" }}</th>
+                        <th>{{ row.dep_amount|floatformat:"2" }}</th>
+                        <th>{{ row.dep_economy|floatformat:"2" }}</th>
+                        <th>{{ row.dep_exceed|floatformat:"2" }}</th>
+                    </tr>
+                {% endifchanged %}
+                <tr>
+                    <td>{{ row.emp }}</td>
+                    <td>-</td>
+                    <td>{{ row.number }}</td>
+                    <td>{{ row.contract }}</td>
+                    <td>{{ row.limit }}</td>
+                    <td>{{ row.amount_nonds|floatformat:"2" }}</td>
+                    <td>{{ row.amount|floatformat:"2" }}</td>
+                    <td>{{ row.economy|floatformat:"2" }}</td>
+                    <td>{{ row.exceed|floatformat:"2" }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

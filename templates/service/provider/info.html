@@ -1,0 +1,38 @@
+{% extends 'service/base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <h3>
+        {{ provider.name }}
+    </h3>
+    <span>
+        <a href="{% url 'service:provider_edit' uid=provider.id %}" class="btn btn-sm btn-info">Редактировать</a>
+    </span>
+{% endblock %}
+
+{% block main %}
+    <table class="table table-mobile">
+        <tr>
+            <th width="250">Название службы: </th>
+            <td>{{ provider.name }}</td>
+        </tr>
+        <tr>
+            <th>Организация: </th>
+            <td>{{ provider.contact.name }}</td>
+        </tr>
+        <tr>
+            <th>Контактное лицо: </th>
+            <td>{{ provider.contact.person_name }}</td>
+        </tr>
+        <tr>
+            <th>E-mail: </th>
+            <td><a href="mailto:{{ provider.contact.email }}">{{ provider.contact.email }}</a></td>
+        </tr>
+        <tr>
+            <th>Телефон: </th>
+            <td><a href="tel:{{ provider.contact.phone_number }}">{{ provider.contact.phone_number }}</a></td>
+        </tr>
+    </table>
+
+{% endblock %}

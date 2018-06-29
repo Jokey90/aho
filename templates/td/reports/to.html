@@ -1,0 +1,39 @@
+{% extends 'td/base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block body %}
+    <h4>Отчет по тех. обслуживанию</h4><br/>
+
+    <table class="table table-bordered table-xs">
+        <thead>
+            <tr class="table-success">
+                <th>Автомобиль</th>
+                <th>Дата</th>
+                <th>Вид обслуживания</th>
+                <th>План расходов, руб.</th>
+                <th>Фактические затраты, руб.</th>
+                <th>Комментарий</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for to in to_list %}
+                <tr>
+                    <td>{{ to.car.name }} <span class="comment">{{ to.car.number }}</span></td>
+                    <td>{{ to.date|date:"d.m.Y" }}</td>
+                    <td>{{ to.name }}</td>
+                    <td>{{ to.budget_amount|num:"2" }}</td>
+                    <td>{{ to.fact_amount|num:"2" }}</td>
+                    <td>{{ to.comment|empty }}</td>
+                </tr>
+            {% endfor %}
+            <tr class="table-success">
+                <th colspan="2"></th>
+                <th>Итого:</th>
+                <th>{{ budget_total|num:"2" }}</th>
+                <th>{{ fact_total|num:"2" }}</th>
+                <th></th>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'td/base.html' %}
+{% load extra_tags %}
+{% block body %}
+
+    {% include 'canedar_static.html' %}
+
+    <form class="form" enctype="multipart/form-data" action="" method="post">
+        {% csrf_token %}
+        <h3>Новый водитель</h3><br/>
+        {% table_form form %}
+        <input type="submit" value="Добавить" class="btn btn-success" />
+    </form>
+{% endblock %}

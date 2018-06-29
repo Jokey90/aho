@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+{% block content_header %}
+    <h3>Контакты</h3>
+    <span>
+        <a href="{% url 'main:contact_new' %}" class="btn btn-sm btn-warning">Создать контакт</a>
+    </span>
+{% endblock %}
+{% block body %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Название компании</th>
+                <th>Контактное лицо</th>
+                <th>E-mail</th>
+                <th>Телефон</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for contact in contacts %}
+            <tr>
+                <td><a href="{% url 'main:contact_info' uid=contact.id %}">{{ contact.name }}</a></td>
+                <td>{{ contact.person_name }}</td>
+                <td><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></td>
+                <td><a href="tel:{{ contact.phone_number }}">{{ contact.phone_number }}</a></td>
+                <td>
+                    <a href="{% url 'main:contact_edit' uid=contact.id %}" class="btn btn-sm btn-info"><i class="fa fa-pencil"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

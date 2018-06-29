@@ -1,0 +1,28 @@
+{% extends 'mobile/sim/info_base.html' %}
+{% load extra_tags %}
+{% block info_container %}
+    <table class="table">
+        <tr>
+            <th>Тариф</th>
+            <td>{{ sim.tariff }}</td>
+        </tr>
+        <tr>
+            <th>Текущий владелец</th>
+            <td>
+                {% if sim.current_owner %}
+                    <a href="{% url 'main:employee_info' eid=sim.current_owner.id %}">{{ sim.current_owner }}</a>
+                {% else %}
+                    нет
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Текущий лимит</th>
+            <td>{{ sim.current_limit|rub }}</td>
+        </tr>
+        <tr>
+            <th>Комментарий</th>
+            <td>{{ sim.comment }}</td>
+        </tr>
+    </table>
+{% endblock %}

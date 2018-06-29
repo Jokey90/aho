@@ -1,0 +1,10 @@
+{% extends 'td/car/car_edit_base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+{% block form %}
+    {{ form.media }}
+    <form class="form" action="" id="car" method="post"  enctype="multipart/form-data">
+        {% csrf_token %}
+        {% table_form form %}
+    </form>
+{% endblock %}

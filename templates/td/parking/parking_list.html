@@ -1,0 +1,52 @@
+{% extends 'td/base.html' %}
+{% load extra_tags %}
+{% block content_header %}
+    <a href="{% url 'td:parking_new' %}" class="btn btn-sm btn-warning">Добавить место</a>
+{% endblock %}
+{% block body %}
+    <table class="table table-hover table-xs">
+        <thead>
+            <tr>
+                <th>Место</th>
+                <th>Этаж</th>
+                <th>Автомобиль</th>
+                <th>За кем закреплено</th>
+                <th>Грейд</th>
+                <th>Условия оплаты</th>
+                <th>Основание</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for parking in parkings %}
+            <tr>
+                <td>
+                    <a href="{% url 'td:parking_info' pid=parking.id %}">{{ parking.number }}</a>
+                </td>
+                <td>
+                    {{ parking.floor_number }}
+                </td>
+                <td>
+                    {{ parking.car_name }}
+                </td>
+                <td>
+                    {{ parking.owner.short_name }}
+                </td>
+                <td>
+                    {{ parking.grade|empty }}
+                </td>
+                <td>
+                    {{ parking.get_payment_type_display|empty }}
+                </td>
+                <td>
+                    {{ parking.get_basis_display|empty }}
+                </td>
+                <td width="10%">
+                    <a href='{% url 'td:parking_edit' pid=parking.id %}' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    <a href='{% url 'td:parking_delete' pid=parking.id %}' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

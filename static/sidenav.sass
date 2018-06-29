@@ -1,0 +1,54 @@
+.sidenav
+  min-height: 100%
+  z-index: 1001
+  width: 0
+  top: 0
+  left: 0
+  background-color: #fff
+  transition: 0.25s
+  overflow-x: hidden
+  overflow-y: auto
+  border-right: 1px solid #eee
+
+  ul.nav
+    margin: 0px 0px 15px 0px
+    min-width: 250px
+
+    p
+      padding: 32px 15px 10px 15px
+      border-bottom: 1px solid #eee
+      display: flex
+      justify-content: space-between
+
+    li.nav-item
+      padding: 0px 15px 0px 15px
+
+.content-dimmer
+  width: 100%
+  height: 100%
+  background-color: #000000
+  display: none
+  opacity: 0.5
+  position: fixed
+  z-index: 1002
+  margin-left: -15px
+
+div.col-sidebar
+  position: relative
+  bottom: 0
+  left: 0
+  z-index: 1000
+  display: block
+  overflow-x: hidden
+  overflow-y: auto
+  border-right: 1px solid #eee
+
+  ul.nav
+    margin: 0px -15px 15px -15px
+
+    p
+      padding: 32px 15px 10px 15px
+      border-bottom: 1px solid #eee
+
+    li.nav-item
+      padding: 0px 15px 0px 15px

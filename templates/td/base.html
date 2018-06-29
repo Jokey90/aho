@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block sidenav %}
+    <ul class="nav flex-column">
+        <li><p class="text-muted">Главная</p></li>
+        <li class="nav-item"><a href="{% url 'td:index' %}">Уведомления</a></li>
+        <li><p class="text-muted">Автопарк</p></li>
+        <li class="nav-item"><a href="{% url 'td:car_list' %}">Автомобили</a></li>
+        <li class="nav-item"><a href="{% url 'td:driver_list' %}">Водители</a></li>
+        <li class="nav-item"><a href="{% url 'td:proxy_list' %}">Доверенности</a></li>
+        <li class="nav-item"><a href="{% url 'td:to_list' %}">Тех. обслуживание</a></li>
+        <li class="nav-item"><a href="{% url 'td:penalty_list' %}">Штрафы</a></li>
+        <li><p class="text-muted">Парковка</p></li>
+        <li class="nav-item">
+            <a href="{% url 'td:parking_list' %}">Парковочные места</a>
+            &nbsp;&nbsp;&nbsp;<a href="{% url 'td:parking_report' %}"><i class="fa fa-file-excel-o"></i></a>
+        </li>
+        <li class="nav-item"><a href="{% url 'td:visitor_list' %}">Гостевая парковка</a></li>
+        <li><p class="text-muted">Отчеты</p></li>
+        <li class="nav-item">
+            <a href="{% url 'td:general_report_web' %}">Общий</a>
+            &nbsp;&nbsp;&nbsp;<a href="{% url 'td:general_report_xls' %}"><i class="fa fa-file-excel-o"></i></a>
+        </li>
+        <li class="nav-item"><a href="{% url 'td:penalties_report_form' %}">Штрафы</a></li>
+        <li class="nav-item"><a href="{% url 'td:tracking_report_form' %}">Передачи</a></li>
+        <li class="nav-item"><a href="{% url 'td:to_report_form' %}">Тех. обслуживание</a></li>
+        <li class="nav-item"><a href="{% url 'td:mileage_report_form' %}">Пробег/топливо</a></li>
+    </ul>
+{% endblock %}
+
+{% block nav-header %}Транспорт{% endblock %}
+{% block body %}
+    {% block main %}{% endblock %}
+{% endblock %}
+
+{% block styles %}
+    <!--<link rel="stylesheet" href="{% static 'td/css/transport.css' %}">-->
+{% endblock %}

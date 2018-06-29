@@ -1,0 +1,43 @@
+{% extends 'td/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <h3><i class="fa fa-user-circle-o"></i> Гость</h3>
+    <span>
+        <a href="{% url 'td:visitor_edit' vid=visitor.id %}" class="btn btn-sm btn-primary">Редактировать</a>
+        <a href="{% url 'td:visitor_delete' vid=visitor.id %}" class="btn btn-sm btn-danger">Удалить</a>
+    </span>
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <tr>
+            <td><b>Дата</b></td>
+            <td>{{ visitor.date }}</td>
+        </tr>
+        <tr>
+            <td><b>Время прибытия</b></td>
+            <td>{{ visitor.time|empty }}</td>
+        </tr>
+        <tr>
+            <td><b>Время выезда</b></td>
+            <td>{{ visitor.end_time|empty }}</td>
+        </tr>
+        <tr>
+            <td><b>Контрагент(гость)</b></td>
+            <td>{{ visitor.visitors_name }}</td>
+        </tr>
+        <tr>
+            <td><b>Номер автомобиля</b></td>
+            <td>{{ visitor.car_number }}</td>
+        </tr>
+        <tr>
+            <td><b>Инициатор(работник НСД)</b></td>
+            <td>{{ visitor.invited_by.short_name }}</td>
+        </tr>
+        <tr>
+            <td><b>Комментарий</b></td>
+            <td>{{ visitor.comment }}</td>
+        </tr>
+    </table>
+{% endblock %}

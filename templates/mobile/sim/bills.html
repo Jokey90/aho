@@ -1,0 +1,35 @@
+{% extends 'mobile/sim/info_base.html' %}
+{% load extra_tags %}
+{% block info_container %}
+    {% paginator bills %}
+    <a class="btn btn-sm btn-secondary" href="{% url 'mobile:sim_bills_chart' uid=sim.id %}"><i class="fa fa-bar-chart" aria-hidden="true"></i> График</a>
+    <br/><br/>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Период</th>
+                <th>Владелец</th>
+                <th>Сумма</th>
+                <th>Лимит</th>
+                <th>Превышение/экономия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bill in bills %}
+                <tr>
+                    <td>{{ bill.period }}</td>
+                    <td>{{ bill.owner }}</td>
+                    <td>{{ bill.amount|rub }}</td>
+                    <td>
+                        {% if bill.limit is not None %}
+                            {{ bill.limit }}
+                        {% else %}
+                            безлимит
+                        {% endif %}
+                    </td>
+                    <td>{{ bill.overflow|rub }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

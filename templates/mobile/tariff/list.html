@@ -1,0 +1,29 @@
+{% extends 'mobile/base.html' %}
+{% block content_header %}
+    <a href="{% url 'mobile:tariff_new' %}" class="btn btn-sm btn-warning">Добавить тариф</a>
+{% endblock %}
+{% block body %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Кол-во SIM-карт</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tariff in tariffs %}
+            <tr>
+                <td>{{ tariff.name }}</td>
+                <td>{{ tariff.description }}</td>
+                <td>{{ tariff.sim_set.count }}</td>
+                <td width="15%">
+                    <a href='{% url 'mobile:tariff_edit' uid=tariff.id %}' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    <a href="{% url 'mobile:tariff_delete' uid=tariff.id %}" class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

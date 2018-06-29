@@ -1,0 +1,36 @@
+{% extends 'mobile/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <h3>
+        <i class="fa fa-file-text-o"></i> {{ contract.name }}
+        {% if contract.active == False %}
+            <span class="comment">(не активен)</span>
+        {% endif %}
+    </h3>
+    <span>
+        <a href="{% url 'mobile:contract_edit' uid=contract.id %}" class="btn btn-sm btn-info">Редактировать</a>
+        {% if contract.active %}
+            <a class="btn btn-sm btn-danger" href="{% url 'mobile:contract_delete' uid=contract.id %}?return=contract_info">Удалить</a>
+        {% else %}
+            <a class="btn btn-sm btn-warning" href="{% url 'mobile:contract_delete' uid=contract.id %}?return=contract_info">Восстановить</a>
+        {% endif %}
+    </span>
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <tr>
+            <th>{% get_label contract 'number' %}</th>
+            <td>{{ contract.number }}</td>
+        </tr>
+        <tr>
+            <th>{% get_label contract 'group' %}</th>
+            <td>{{ contract.group }}</td>
+        </tr>
+        <tr>
+            <th>{% get_label contract 'comment' %}</th>
+            <td>{{ contract.comment }}</td>
+        </tr>
+    </table>
+{% endblock %}

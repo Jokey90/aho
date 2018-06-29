@@ -1,0 +1,10 @@
+{% extends 'mobile/base.html' %}
+{% load extra_tags %}
+{% block body %}
+    <form class="form" action="" method="post">
+        {% csrf_token %}
+        <h3>Отчет по мобильной связи за месяц</h3><br/>
+        {% table_form form %}
+        <input type="submit" value="Сформировать" class="btn btn-success" />
+    </form>
+{% endblock %}

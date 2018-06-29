@@ -1,0 +1,52 @@
+{% extends 'td/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <a href="{% url 'td:penalty_edit' pid=penalty.id %}" class="btn btn-sm btn-primary">Редактировать</a>
+    <button onclick="if(confirm('Удалить безвозвратно?')){location.href='{% url 'td:penalty_delete' pid=penalty.id %}';}"
+       class="btn btn-sm btn-danger">Удалить</button>
+{% endblock %}
+
+{% block body %}
+    <br/>
+    <h3><i class="fa fa-money"></i> Штраф № {{ penalty.number }} от {{ penalty.date }}</h3>
+    <br/>
+    <table class="table">
+        <tr>
+            <td>{% get_label penalty 'date' %}</td>
+            <td>{{ penalty.date }}</td>
+        </tr>
+        <tr>
+            <td>{% get_label penalty 'car' %}</td>
+            <td>{{ penalty.car.name }} <span class="comment">{{ penalty.car.number }}</span></td>
+        </tr>
+        <tr>
+            <td>{% get_label penalty 'number' %}</td>
+            <td>{{ penalty.number }}</td>
+        </tr>
+        <tr>
+            <td>{% get_label penalty 'description' %}</td>
+            <td>{{ penalty.description }}</td>
+        </tr>
+        <tr>
+            <td>{% get_label penalty 'amount' %}</td>
+            <td>{{ penalty.amount}}</td>
+        </tr>
+        <tr>
+            <td>{% get_label penalty 'obtain_date' %}</td>
+            <td>{{ penalty.obtain_date|empty }}</td>
+        </tr>
+        <tr>
+            <td>{% get_label penalty 'payed' %}</td>
+            <td>{{ penalty.payed|boolean }}</td>
+        </tr>
+        <tr>
+            <td>{% get_label penalty 'pay_date' %}</td>
+            <td>{{ penalty.pay_date|empty }}</td>
+        </tr>
+        <tr>
+            <td>{% get_label penalty 'scan' %}</td>
+            <td>{% image_link penalty.scan %}</td>
+        </tr>
+    </table>
+{% endblock %}

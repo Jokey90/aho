@@ -1,0 +1,56 @@
+{% extends 'td/car/car_info_base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block info_container %}
+    <table class="table">
+        <tr>
+            <th width="400">Основные документы</th>
+            <td><a href="{% url 'td:car_edit_docs' cid=car.id %}" class="btn btn-primary btn-sm">Редактировать</a></td>
+        </tr>
+    </table>
+    <table class="table ">
+        <tr>
+            <th>Документ</th>
+            <th>Номер</th>
+            <th>Срок действия</th>
+            <th>Место хранения</th>
+            <th>Скан</th>
+        </tr>
+        <tr>
+            <td>ПТС</td>
+            <td>{{ car.pts_number }}</td>
+            <td></td>
+            <td>{{ car.get_pts_place_display }}</td>
+            <td>{% image_link car.pts_scan %}</td>
+        </tr>
+        <tr>
+            <td>СТС</td>
+            <td>{{ car.sts_number }}</td>
+            <td></td>
+            <td>{{ car.get_sts_place_display }}</td>
+            <td>{% image_link car.sts_scan %}</td>
+        </tr>
+        <tr>
+            <td>Диагностическая карта</td>
+            <td>{{ car.diag_card_number }}</td>
+            <td>{% if car.diag_card_date %}{{ car.diag_card_date }}{% endif %}</td>
+            <td>{{ car.get_diag_card_place_display }}</td>
+            <td>{% image_link car.diag_card_scan %}</td>
+        </tr>
+        <tr>
+            <td>Топливная карта</td>
+            <td>{{ car.fuel_card_number }}</td>
+            <td>{% if car.fuel_card_date %}{{ car.fuel_card_date }}{% endif %}</td>
+            <td>{{ car.get_fuel_card_place_display }}</td>
+            <td>{% image_link car.fuel_card_scan %}</td>
+        </tr>
+        <tr>
+            <td>Корпоративная карта</td>
+            <td>{{ car.corp_card_number }}</td>
+            <td>{% if car.corp_card_date %}{{ car.corp_card_date }}{% endif %}</td>
+            <td>{{ car.get_corp_card_place_display }}</td>
+            <td>{% image_link car.corp_card_scan %}</td>
+        </tr>
+    </table>
+{% endblock %}

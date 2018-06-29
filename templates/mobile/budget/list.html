@@ -1,0 +1,30 @@
+{% extends 'mobile/base.html' %}
+{% load extra_tags %}
+{% block content_header %}
+    <a href="{% url 'mobile:budget_new' %}" class="btn btn-sm btn-warning">Добавить бюджет</a>
+{% endblock %}
+{% block body %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Год</th>
+                <th>Подразделение</th>
+                <th>Сумма</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for budget in budgets %}
+            <tr>
+                <td>{{ budget.year }}</td>
+                <td>{{ budget.get_division_display }}</td>
+                <td>{{ budget.amount|rub }}</td>
+                <td width="15%">
+                    <a href='{% url 'mobile:budget_edit' uid=budget.id %}' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    <a href="{% url 'mobile:budget_delete' uid=budget.id %}" class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

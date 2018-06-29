@@ -1,0 +1,51 @@
+{% extends 'td/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <a href="{% url 'td:visitor_new' %}" class="btn btn-sm btn-warning">Добавить</a>
+    {% paginator visitors %}
+{% endblock %}
+{% block body %}
+    <table class="table table-hover table-xs">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Время выезда</th>
+                <th>Имя гостя</th>
+                <th>Номер авто</th>
+                <th>Инициатор</th>
+                <th>Комментарий</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for visitor in visitors %}
+            <tr>
+                <td>
+                    <a href="{% url 'td:visitor_info' vid=visitor.id %}">{{ visitor.date}} {{ visitor.time|empty }}</a>
+                </td>
+                <td>
+                    {{ visitor.end_time|empty }}
+                </td>
+                <td>
+                    {{ visitor.visitors_name}}
+                </td>
+                <td>
+                    {{ visitor.car_number}}
+                </td>
+                <td>
+                    {{ visitor.invited_by.short_name}}
+                </td>
+                <td>
+                    {{ visitor.comment}}
+                </td>
+                <td width="10%">
+                    <a href='{% url 'td:visitor_edit' vid=visitor.id %}' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    <button onclick="if(confirm('Удалить безвозвратно?')){location.href='{% url 'td:visitor_delete' vid=visitor.id %}';}"
+                       class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

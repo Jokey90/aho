@@ -1,0 +1,63 @@
+{% extends 'td/base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block body %}
+    <h4>Отчет по затратам на топливо относительно пройденных км за {{ year }} год</h4><br/>
+
+    <table class="table table-bordered table-xs table-hover">
+        <thead>
+            <tr class="table-success">
+                <th>№</th>
+                <th>Марка и модель автомобиля</th>
+                <th>Гос. № а/м</th>
+                <th>VIN</th>
+                <th>Год</th>
+                <th> </th>
+                <th>Январь</th>
+                <th>Февраль</th>
+                <th>Март</th>
+                <th>Апрель</th>
+                <th>Май</th>
+                <th>Июнь</th>
+                <th>Июль</th>
+                <th>Август</th>
+                <th>Сентябрь</th>
+                <th>Октябрь</th>
+                <th>Ноябрь</th>
+                <th>Декабрь</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% regroup mileages by car as mileages_by_car %}
+            {% for car_mileages in mileages_by_car %}
+                <tr>
+                    <td rowspan="2">{{ forloop.counter }}</td>
+                    <td rowspan="2">{{ car_mileages.grouper.name }}</td>
+                    <td rowspan="2">{{ car_mileages.grouper.number }}</td>
+                    <td rowspan="2">{{ car_mileages.grouper.vin }}</td>
+                    <td rowspan="2">{{ car_mileages.grouper.release_year }}</td>
+                    <td>Пробег по одометру</td>
+                    {% for x in 'xxxxxxxxxxxx' %}
+                        <td>
+                            {% for row in car_mileages.list %}
+                                {% if row.month == forloop.parentloop.counter %}{{ row.diff|num:"0" }}{% endif %}
+                            {% endfor %}
+                        </td>
+                    {% endfor %}
+
+                </tr>
+                <tr>
+                    <td>Сумма расходов руб./км</td>
+                    {% for x in 'xxxxxxxxxxxx' %}
+                        <td>
+                            {% for row in car_mileages.list %}
+                                {% if row.month == forloop.parentloop.counter %}{{ row.gasoline_rate|num:"6" }}{% endif %}
+                            {% endfor %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

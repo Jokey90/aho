@@ -1,0 +1,40 @@
+{% extends 'service/base.html' %}
+{% load staticfiles %}
+{% block main %}
+
+    <form class="form" enctype="multipart/form-data" action="" method="post">
+        {% csrf_token %}
+        <h3>Закрытие заявки</h3><br/>
+        <table class="table table-mobile">
+            <tr>
+                <th width="200">Тема: </th>
+                <td>{{ ticket.subject }}</td>
+            </tr>
+            <tr>
+                <th>Дата создания: </th>
+                <td>{{ ticket.creation_datetime|date:'d.m.Y H:i:s' }}</td>
+            </tr>
+            <tr>
+                <th>Служба: </th>
+                <td>{{ ticket.provider.name }}</td>
+            </tr>
+            <tr>
+                <th>Замечание: </th>
+                <td>
+                    {{ ticket.issue }}
+                </td>
+            </tr>
+            <tr>
+                <th>Текст заявки: </th>
+                <td>{{ ticket.text }}</td>
+            </tr>
+            {% for field in form %}
+                <tr class="table-info">
+                    <th>{{ field.label_tag }}</th>
+                    <td>{{ field }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <input type="submit" value="Сохранить" class="btn btn-success" />
+    </form>
+{% endblock %}

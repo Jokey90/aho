@@ -1,0 +1,47 @@
+{% extends 'td/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <a href="{% url 'td:accident_edit' aid=accident.id %}" class="btn btn-sm btn-primary">Редактировать</a>
+    <button onclick="if(confirm('Удалить безвозвратно?')){location.href='{% url 'td:accident_delete' aid=accident.id %}';}"
+                       class="btn btn-sm btn-danger" title="удалить">Удалить</button>
+{% endblock %}
+
+{% block body %}
+    <br/>
+    <h3>
+        <i class="fa fa-warning"></i> {{ accident.name }}
+    </h3>
+    <br/>
+    <table class="table">
+        <tr><td width="400"><b>{% get_label acident 'car' %}</b></td><td><a href="{% url 'td:car_info' cid=accident.car_id %}">{{ accident.car }}</a></td>
+        <tr><td><b>{% get_label accident 'date' %}</b></td><td>{{ accident.date }}</td>
+        <tr><td><b>{% get_label accident 'comment' %}</b></td><td>{{ accident.comment }}</td>
+        <tr><td><b>{% get_label accident 'scan' %}</b></td><td>{{ accident.scan }}</td>
+    </table>
+    <br/>
+    <h4>История передач</h4>
+    <table class="table">
+        <tr>
+            <th>Дата</th>
+            <th>Кому передано</th>
+            <th>Действия</th>
+        </tr>
+        {% for record in tracking %}
+            <tr>
+                <td>
+                    {{ record.date }}
+                </td>
+                <td>
+                    {% if record.owner %}
+                        <a href="{% url 'td:driver_info' did=record.owner.id %}">{{ record.owner }}</a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href='{% url 'td:item_tracking_edit' tid=record.id %}' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    <button onclick='confirm_delete("{% url 'td:item_tracking_delete' tid=record.id %}");' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

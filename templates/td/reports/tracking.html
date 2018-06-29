@@ -1,0 +1,55 @@
+{% extends 'td/base.html' %}
+{% load staticfiles %}
+
+{% block body %}
+    <h4>Отчет о передачах</h4><br/>
+
+    <table class="table table-bordered table-xs table-hover">
+        <tr>
+            <th>Дата передачи</th>
+            <th>Тип объекта</th>
+            <th>Автомобиль</th>
+            <th>Номер</th>
+            <th>Предыдущий владелец</th>
+            <th>Новый владелец</th>
+        </tr>
+        <tr>
+            <th colspan="6" class="header table-warning">Документы/ключи/пропуска</th>
+        </tr>
+        {% for row in item_tracking %}
+            <tr>
+                <td>{{ row.date|date:"d.m.Y" }}</td>
+                <td>{{ row.item.get_type_display }}</td>
+                <td>{{ row.item.car }}</td>
+                <td>{{ row.item.number }}</td>
+                <td>
+                    {% if row.last_owner %}
+                        {{ row.last_owner }}
+                    {% else %}
+                        нет
+                    {% endif %}
+                </td>
+                <td>{{ row.owner }}</td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <th colspan="6" class="header table-warning">Доверенности</th>
+        </tr>
+        {% for row in proxy_tracking %}
+            <tr>
+                <td>{{ row.date|date:"d.m.Y" }}</td>
+                <td>{{ row.proxy.get_type_display }}</td>
+                <td>{{ row.proxy.car }}</td>
+                <td> </td>
+                <td>
+                    {% if row.last_owner %}
+                        {{ row.last_owner }}
+                    {% else %}
+                        нет
+                    {% endif %}
+                </td>
+                <td>{{ row.owner }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

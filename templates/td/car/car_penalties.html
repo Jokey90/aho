@@ -1,0 +1,39 @@
+{% extends 'td/car/car_info_base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block info_container %}
+        <table class="table">
+            <tr>
+                <th width="400">Штрафы на этот автомобиль</th>
+                <td colspan="3"><a href="{% url 'td:penalty_new' %}?car={{ car.id }}&return=car_penalties" class="btn btn-success btn-sm">Добавить штраф</a></td>
+            </tr>
+        </table>
+        <table class="table">
+            <tr>
+                <th>Дата</th>
+                <th>Номер</th>
+                <th>Нарушение</th>
+                <th>Сумма</th>
+                <th>Передан водителю</th>
+                <th>Оплачен</th>
+                <th>Скан</th>
+                <th width="100">Действия</th>
+            </tr>
+            {% for penalty in penalties %}
+                <tr>
+                    <td>{{ penalty.date }}</td>
+                    <td><a href="{% url 'td:penalty_info' pid=penalty.id %}">{{ penalty.number }}</a></td>
+                    <td>{{ penalty.description }}</td>
+                    <td>{{ penalty.amount|empty }}</td>
+                    <td>{{ penalty.obtain_date }}</td>
+                    <td>{{ penalty.payed|boolean }}</td>
+                    <td>{% image_link penalty.scan %}</td>
+                    <td>
+                        <a href='{% url 'td:penalty_edit' pid=penalty.id %}?return=car_penalties' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                        <button onclick='confirm_delete("{% url 'td:penalty_delete' pid=penalty.id %}?return=car_penalties");' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'td/base.html' %}
+{% load static %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <a href="{% url 'td:driver_edit' did=driver.id %}" class="btn btn-sm btn-primary">Редактировать водителя</a>
+    <a href="{% url 'td:driver_delete' did=driver.id %}" class="btn btn-sm btn-danger">Удалить водителя</a>
+{% endblock %}
+
+{% block body %}
+    <br/>
+    <h3><!--<i class="fa fa-user-circle"></i>--> {{ driver.emp.last_name }} {{ driver.emp.first_name }} {{ driver.emp.middle_name }}</h3>
+    <br/>
+    <table class="table">
+        <tr>
+            <td width="300"><b>Вод. удостоверение</b></td>
+            <td>{{ driver.license }} ({% image_link driver.photo %})</td>
+        </tr>
+        <tr>
+            <td width="300"><b>Вод. удостоверение до</b></td>
+            <td>{{ driver.license_date }}</td>
+        </tr>
+        <tr>
+            <td><b>Телефон</b></td>
+            <td>{{ driver.phone }}</td>
+        </tr>
+        <tr>
+            <td><b>Комментарии</b></td>
+            <td>{{ driver.comment }}</td>
+        </tr>
+    </table>
+
+    <br/>
+    <hr/>
+    <br/>
+
+    {% if proxies %}
+        <h4>Доверенности на руках:</h4>
+        <table class="table">
+            <tr>
+                <th>Тип доверенности</th>
+                <th>Автомобиль</th>
+                <th>Сроки доверенности</th>
+                <th>Дата получения</th>
+                <th>Действия</th>
+            </tr>
+            {% for proxy in proxies %}
+                <tr {% if today > proxy.end_date %} class="expired" {% endif %}>
+                    <td width="200"><a href="{% url 'td:proxy_info' pid=proxy.id %}">{{ proxy.get_type_display }}</a></td>
+                    <td><a href="{% url 'td:car_info' cid=proxy.car.id %}">{{ proxy.car}}</a></td>
+                    <td>{{ proxy.start_date|date:"d.m.Y" }} - {{ proxy.end_date|date:"d.m.Y" }}</td>
+                    <td width="180">{{ proxy.last_move_date }}</td>
+                    <td width="130">
+                        <a href='{% url 'td:proxy_tracking_new' pid=proxy.id %}?return=car_proxies' class="btn btn-sm btn-secondary" title="передать"><i class="fa fa-exchange"></i></a>
+                        <a href='{% url 'td:proxy_edit' pid=proxy.id %}?return=car_proxies' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                        <button onclick='confirm_delete("{% url 'td:proxy_delete' pid=proxy.id %}?return=car_proxies");' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    <br/>
+    {% if proxies %}
+        <h4>Документы/ключи/пропуска на руках:</h4>
+        <table class="table">
+            <tr>
+                <th>Тип</th>
+                <th>Автомобиль</th>
+                <th>Номер</th>
+                <th>Дата получения</th>
+                <th>Действия</th>
+            </tr>
+            {% for item in items %}
+                <tr>
+                    <td width="200"><a href="{% url 'td:item_info' iid=item.id %}">{{ item.get_type_display }}</a></td>
+                    <td><a href="{% url 'td:car_info' cid=item.car.id %}">{{ item.car}}</a></td>
+                    <td>{{ item.number}}</td>
+                    <td width="180">{{ item.get_last_move }}</td>
+                    <td width="130">
+                        <a href='{% url 'td:item_tracking_new' iid=item.id %}?return=car_keys' class="btn btn-sm btn-secondary" title="передать"><i class="fa fa-exchange"></i></a>
+                        <a href='{% url 'td:item_edit' iid=item.id %}?return=car_keys' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                        <button onclick='confirm_delete("{% url 'td:item_delete' iid=item.id %}?return=car_keys");' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endblock %}

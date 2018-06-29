@@ -1,0 +1,40 @@
+{% extends 'td/car/car_info_base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block info_container %}
+        <table class="table">
+            <tr>
+                <th width="400">Доверенности на этот автомобиль</th>
+                <td colspan="3"><a href="{% url 'td:proxy_new' %}?car={{ car.id }}&return=car_proxies" class="btn btn-success btn-sm">Добавить доверенность</a></td>
+            </tr>
+            <tr>
+                <th>Тип доверенности</th>
+                <th>Водитель</th>
+                <th>С</th>
+                <th>До</th>
+                <th>Владелец</th>
+                <th>Действия</th>
+            </tr>
+            {% for proxy in proxies %}
+                <tr>
+                    <td width="400"><a href="{% url 'td:proxy_info' pid=proxy.id %}">{{ proxy.get_type_display }}</a></td>
+                    <td><a href="{% url 'td:proxy_info' pid=proxy.id %}">{{ proxy.driver.short_name}}</a></td>
+                    <td>{{ proxy.start_date|date:"d.m.Y" }}</td>
+                    <td>{{ proxy.end_date|expire:30|empty }}</td>
+                    <td>
+                        {% if proxy.current_owner %}
+                            <a href="{% url 'td:driver_info' did=proxy.current_owner.id %}">{{ proxy.current_owner }}</a>
+                        {% else %}
+                            нет
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href='{% url 'td:proxy_tracking_new' pid=proxy.id %}?return=car_proxies' class="btn btn-sm btn-secondary" title="передать"><i class="fa fa-exchange"></i></a>
+                        <a href='{% url 'td:proxy_edit' pid=proxy.id %}?return=car_proxies' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                        <button onclick='confirm_delete("{% url 'td:proxy_delete' pid=proxy.id %}?return=car_proxies");' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+{% endblock %}

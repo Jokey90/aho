@@ -1,0 +1,45 @@
+{% extends 'td/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <a href="{% url 'td:to_edit' tid=to.id %}" class="btn btn-sm btn-primary">Редактировать ТО</a>
+    <a href="{% url 'td:to_delete' tid=to.id %}" class="btn btn-sm btn-danger">Удалить ТО</a>
+{% endblock %}
+
+{% block body %}
+    <br/>
+    <h3>
+        <i class="fa fa-cog"></i> ТО "{{ to.car }}"
+    </h3>
+    <br/>
+    <table class="table">
+        <tr>
+            <th>Автомобиль</th>
+            <td><a href="{% url 'td:car_info' cid=to.car_id %}">{{ to.car }}</a></td>
+        </tr>
+        <tr>
+            <th>Дата</th>
+            <td>{{ to.date }}</td>
+        </tr>
+        <tr>
+            <th>Вид обслуживания</th>
+            <td>{{ to.name }}</td>
+        </tr>
+        <tr>
+            <th>Бюджет</th>
+            <td>{{ to.budget_amount|rub }}</td>
+        </tr>
+        <tr>
+            <th>Фактические расходы</th>
+            <td>{{ to.fact_amount|rub }}</td>
+        </tr>
+        <tr>
+            <th>Пробег</th>
+            <td>{{ to.mileage|num:0 }}</td>
+        </tr>
+        <tr>
+            <th>Комментарий</th>
+            <td>{{ to.comment|empty }}</td>
+        </tr>
+    </table>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'main/base.html' %}
+{% block content_header %}
+    <h3>Список сотрудников</h3>
+    {% if request.user.is_superuser %}
+        <a href="{% url 'main:employee_list'  %}?all=1" class="btn btn-sm btn-secondary">Показать всех</a>
+    {% endif %}
+    <a href="{% url 'main:employee_new' %}" class="btn btn-sm btn-warning">Создать сотрудника</a>
+{% endblock %}
+{% block body %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ФИО сотрудника</th>
+                <th>Подразделение</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for emp in emps %}
+            <tr>
+                <td>
+                    <a href="{% url 'main:employee_info' eid=emp.id %}">{{ emp.last_name }} {{ emp.first_name }} {{ emp.middle_name }}</a>
+                </td>
+                <td>
+                    <a href="{% url 'main:department_info' did=emp.department_id %}">{{ emp.department }}</a>
+                </td>
+                <td width="10%">
+                    <a href='{% url 'main:employee_edit' eid=emp.id %}' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    {% if request.user.is_superuser %}
+                        {% if emp.active %}
+                            <a href='{% url 'main:employee_delete' eid=emp.id %}' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></a>
+                        {% else %}
+                            <a href='{% url 'main:employee_delete' eid=emp.id %}' class="btn btn-sm btn-warning" title="восстановить"><i class="fa fa-refresh"></i></a>
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

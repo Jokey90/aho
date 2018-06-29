@@ -1,0 +1,37 @@
+{% extends 'td/car/car_info_base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block info_container %}
+        <table class="table">
+            <tr>
+                <th width="400">ДТП с участием этого автомобиля</th>
+                <td colspan="3"><a href="{% url 'td:accident_new' %}?car={{ car.id }}&return=car_accidents" class="btn btn-success btn-sm">Добавить</a></td>
+            </tr>
+        </table>
+        <table class="table">
+            <tr>
+                <th>Название</th>
+                <th>Дата</th>
+                <th>Виновник</th>
+                <th width="100">Действия</th>
+            </tr>
+            {% for accident in accidents %}
+                <tr>
+                    <td width="200"><a href="{% url 'td:accident_info' aid=accident.id %}">{{ accident.name }}</a></td>
+                    <td>{{ accident.date|empty }}</td>
+                    <td>
+                        {% if accident.culprit %}
+                            <a href="{% url 'td:driver_info' did=accident.culprit.id %}">{{ accident.culprit }}</a>
+                        {% else %}
+                            не наш водитель
+                        {% endif %}
+                    </td>
+                    <td width="130">
+                        <a href='{% url 'td:accident_edit' aid=accident.id %}?return=car_accidents' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                        <button onclick='confirm_delete("{% url 'td:accident_delete' aid=accident.id %}?return=car_accidents");' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+{% endblock %}

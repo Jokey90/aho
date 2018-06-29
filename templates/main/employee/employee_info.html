@@ -1,0 +1,32 @@
+{% extends 'main/base.html' %}
+
+{% block content_header %}
+    <a href="{% url 'main:employee_edit' eid=emp.id %}" class="btn btn-sm btn-primary">Редактировать сотрудника</a>
+    {% if request.user.is_superuser %}
+        <a href="{% url 'main:employee_delete' eid=emp.id %}" class="btn btn-sm btn-danger">Удалить сотрудника</a>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <br/>
+    <h3><i class="fa fa-user-circle"></i> {{ emp.last_name }} {{ emp.first_name }} {{ emp.middle_name }}</h3>
+    <br/>
+    <table class="table">
+        <tr>
+            <td><b>Подразделение</b></td>
+            <td><a href="{% url 'main:department_info' did=emp.department_id %}">{{ emp.department }}</a></td>
+        </tr>
+        <tr>
+            <td><b>Должность</b></td>
+            <td>{{ emp.position }}</td>
+        </tr>
+        <tr>
+            <td><b>Группа</b></td>
+            <td>{{ emp.group.name }}</td>
+        </tr>
+        <tr>
+            <td><b>Электронная почта</b></td>
+            <td><a href="mailto:{{ emp.email }}">{{ emp.email }}</a></td>
+        </tr>
+    </table>
+{% endblock %}

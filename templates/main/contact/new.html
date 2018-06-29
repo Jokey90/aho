@@ -1,0 +1,12 @@
+{% extends 'main/base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block body %}
+    <form class="form" enctype="multipart/form-data" action="" method="post">
+        {% csrf_token %}
+        <h3>Новый контакт</h3><br/>
+        {% table_form form %}
+        <input type="submit" value="Сохранить" class="btn btn-success" />
+    </form>
+{% endblock %}

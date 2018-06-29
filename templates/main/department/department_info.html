@@ -1,0 +1,62 @@
+{% extends 'main/base.html' %}
+
+{% block content_header %}
+    <a href="{% url 'main:department_edit' did=dep.id %}" class="btn btn-sm btn-primary">Редактировать подразделение</a>
+    {% if request.user.is_superuser %}
+        <a href="{% url 'main:department_delete' did=dep.id %}" class="btn btn-sm btn-danger">Удалить подразделение</a>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <br/>
+    <h3>
+        <i class="fa fa-group"></i> {{ dep.name }}<br/>
+        {% if dep.description %}
+            <span class="comment">{{ dep.description }}</span>
+        {% endif %}
+    </h3>
+
+    <table class="table table-mobile">
+        <tbody>
+            <tr>
+                <td width="300"><b>Руководитель</b></td>
+                <td>
+                    {% if dep.manager %}
+                        <a href="{% url 'main:employee_info' eid=dep.manager_id %}">{{ dep.manager.short_name }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% if dep.parent_department %}
+            <tr>
+                <td><b>Родительское подразделение</b></td>
+                <td>
+                    <a href="{% url 'main:department_info' did=dep.parent_department_id %}">{{ dep.parent_department }}</a>
+                </td>
+            </tr>
+            {% endif %}
+            {% if child_deps.count > 0 %}
+            <tr>
+                <td><b>Подчиненные подразделения</b></td>
+                <td>
+                    <ol>
+                        {% for d in child_deps %}
+                            <li><a href="{% url 'main:department_info' did=d.id %}">{{ d.name }}</a></li>
+                        {% endfor %}
+                    </ol>
+                </td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td><b>Сотрудники</b></td>
+                <td>
+                    <ol>
+                        {% for emp in emps %}
+                            <li><a href="{% url 'main:employee_info' eid=emp.id %}">{{ emp.short_name }}</a></li>
+                        {% endfor %}
+                    </ol>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+{% endblock %}

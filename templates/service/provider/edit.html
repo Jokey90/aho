@@ -1,0 +1,14 @@
+{% extends 'service/base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+{% block main %}
+
+    <form class="form" enctype="multipart/form-data" action="" method="post">
+        {% csrf_token %}
+        <h3>Cервисный провайдер</h3><br/>
+        <table class="table table-mobile">
+            {% table_form form %}
+        </table>
+        <input type="submit" value="Добавить" class="btn btn-success" />
+    </form>
+{% endblock %}

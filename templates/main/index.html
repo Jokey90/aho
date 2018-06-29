@@ -1,0 +1,8 @@
+{% extends 'main/base.html' %}
+{% block body %}
+    <ul class="nav flex-column">
+        <li class="nav-item"><a href="{% url 'main:department_list' %}">Подразделения</a></li>
+        <li class="nav-item"><a href="{% url 'main:employee_list' %}">Сотрудники</a></li>
+        <li class="nav-item"><a href="{% url 'main:contact_list' %}">Контакты</a></li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'service/base.html' %}
+{% load staticfiles %}
+{% block main %}
+
+    <form class="form" enctype="multipart/form-data" action="" method="post">
+        {% csrf_token %}
+        <h3>Настройки приложения</h3><br/>
+        {{ management_form }}
+        <table class="table table-mobile">
+            {% for setting in formset %}
+                <tr>
+                    <th>{{ setting.name }}</th>
+                    <td>{{ setting.form.id }}{{ setting.form.value }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <input type="submit" value="Сохранить" class="btn btn-success" />
+    </form>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+
+{% block content_header %}
+    <h3><i class="fa fa-user-circle"></i> {{ contact.name }}</h3>
+    <span>
+        <a href="{% url 'main:contact_edit' uid=contact.id %}" class="btn btn-sm btn-info">Редактировать</a>
+    </span>
+{% endblock %}
+
+{% block body %}
+    <table class="table table-mobile">
+        <tr>
+            <th>Адрес: </th>
+            <td>{{ contact.address }}</td>
+        </tr>
+        <tr>
+            <th>Контактное лицо: </th>
+            <td>{{ contact.person_name }}</td>
+        </tr>
+        <tr>
+            <th>E-mail: </th>
+            <td><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></td>
+        </tr>
+        <tr>
+            <th>Телефон: </th>
+            <td><a href="tel:{{ contact.phone_number }}">{{ contact.phone_number }}</a></td>
+        </tr>
+        <tr>
+            <th>Примечание: </th>
+            <td>{{ contact.comment }}</td>
+        </tr>
+    </table>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% load staticfiles %}
+{% load extra_tags %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>{% block title %}АХО{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'vendor/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'vendor/css/font-awesome.min.css' %}">
+        <link rel="stylesheet" href="{% static 'base.css' %}">
+        {% block styles %}{% endblock %}
+        <script src="{% static 'vendor/js/jquery.min.js' %}"></script>
+        <script src="{% static 'vendor/js/bootstrap.min.js' %}"></script>
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
+    </head>
+    <body>
+        <nav class="nav nav-top bg-td">
+            <div class="col-md-2">
+                <h3 class="navbar-brand mb-0" {% if is_mobile %}onclick="toggleNav()"{% endif %}>
+                    {% if is_mobile %}<i class="fa fa-bars"></i> {% endif %}
+                    {% block nav-header %}{% endblock %}
+                </h3>
+            </div>
+            <div class="col-md-10">
+                <div class="nav-flex">
+                    {% if is_mobile %}
+                        <ul class="nav">
+                            <li class="nav-item"><a class="nav-link" href="{% url 'main:index' %}"><i class="fa fa-home"></i></a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'mobile:index' %}"><i class="fa fa-phone"></i></a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'td:index' %}"><i class="fa fa-car"></i></a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'service:index' %}"><i class="fa fa-coffee"></i></a></li>
+                        </ul>
+                    {% else %}
+                        <ul class="nav">
+                            <li class="nav-item"><a class="nav-link" href="{% url 'main:index' %}">Главная</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'mobile:index' %}">Моб. связь</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'td:index' %}">Транспорт</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'service:index' %}">Сервис</a></li>
+                        </ul>
+                        <span class="navbar-text">{{ user }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+        <div class="body">
+            <div id="sidenav" class="sidenav"
+                 {% if is_mobile %}
+                 style="min-width: 0px;"
+                 {% else %}
+                 style="min-width: 250px;"
+                 {% endif %}>
+                {% block sidenav %}{% endblock %}
+            </div>
+            <div id="main-content" class="main-content">
+                {% if is_mobile %}<div id="content-dimmer" class="content-dimmer" onclick="toggleNav()"></div>{% endif %}
+                <div class="content-header {% if is_mobile %}mobile{% endif %}">
+                    {% block content_header %}{% endblock %}
+                </div>
+                {% block body %}Hello world!{% endblock %}
+                <br/><br/>
+                {% block messages %}
+                    {% if messages %}
+                        <div class="messages-container">
+                            {% for message in messages %}
+                                <div class="card card-block{% if message.tags %} {{ message.tags }} {% endif %}" onclick="close_message(this);">
+                                    {{ message }}
+                                    <span class="hint">нажмите чтобы скрыть</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endblock %}
+            </div>
+        </div>
+        <script src="{% static 'base.js' %}"></script>
+        {% block scripts %}{% endblock %}
+    </body>
+    <script>
+        function toggleNav() {
+            var sidenav = $('#sidenav');
+            var dimmer = $('#content-dimmer');
+            if (sidenav.css('min-width') != '0px') {
+                sidenav.css('min-width', '0px');
+                dimmer.toggle();
+            } else {
+                sidenav.css('min-width', '300px');
+                dimmer.toggle();
+            }
+        }
+    </script>
+</html>

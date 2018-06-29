@@ -1,0 +1,11 @@
+{% extends 'main/base.html' %}
+{% load extra_tags %}
+
+{% block body %}
+    <form class="form" action="" method="post">
+        {% csrf_token %}
+        <h3>Новый сотрудник</h3><br/>
+        {% table_form form %}
+        <input type="submit" value="Создать" class="btn btn-success" />
+    </form>
+{% endblock %}

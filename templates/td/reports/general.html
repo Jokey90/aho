@@ -1,0 +1,77 @@
+{% extends 'td/base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block body %}
+    {% for car in cars %}
+        <div class="card">
+            <div class="card-header">
+                <h3>{{ car.car.name }} <span class="comment">{{ car.car.number }}</span></h3>
+            </div>
+            <div class="card-block">
+                <table class="table table-sm">
+                    <tr><th width="500">{% get_label car.car 'ownership_type' %}</th><td>{{ car.car.get_ownership_type_display }}</td></tr>
+                    <tr><th>{% get_label car.car 'owner' %}</th><td>{{ car.car.owner|empty }}</td></tr>
+                    <tr><th>Последнее показание одометра</th><td>{% month car.mileage.month %} {{ car.mileage.year|empty }} - {{ car.mileage.value|num:"0" }} км.</td></tr>
+                    <tr>
+                        <th>Последнее ТО</th>
+                        <td>
+                            {% if car.to %}
+                                {{ car.to.name }} {{ car.to.date }} ({{ car.to.mileage }} км.)
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+                <h4>Документы/ключи/пропуска:</h4>
+                <table class="table table-sm">
+                    <tr>
+                        <th>Тип</th>
+                        <th>Номер</th>
+                        <th>Срок</th>
+                        <th>Владелец</th>
+                    </tr>
+                    {% for item in car.items %}
+                        <tr>
+                            <td width="200">{{ item.get_type_display }}</td>
+                            <td>{{ item.number|empty }}</td>
+                            <td>{{ item.end_date|date:"d.m.Y" }}</td>
+                            <td>
+                                {% if item.current_owner %}
+                                    {{ item.current_owner }}
+                                {% else %}
+                                    нет
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <h4>Доверенности:</h4>
+                <table class="table table-sm">
+                    <tr>
+                        <th>Тип доверенности</th>
+                        <th>Водитель</th>
+                        <th>Сроки</th>
+                        <th>Владелец</th>
+                    </tr>
+                    {% for proxy in car.proxies %}
+                        <tr>
+                            <td width="400">{{ proxy.get_type_display }}</td>
+                            <td>{{ proxy.driver }}</td>
+                            <td>{{ proxy.start_date|date:"d.m.Y" }} - {{ proxy.end_date|date:"d.m.Y" }}</td>
+                            <td>
+                                {% if proxy.current_owner %}
+                                    {{ proxy.current_owner }}
+                                {% else %}
+                                    нет
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <br/>
+    {% endfor %}
+{% endblock %}

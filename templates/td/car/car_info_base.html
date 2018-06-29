@@ -1,0 +1,27 @@
+{% extends 'td/base.html' %}
+{% load staticfiles %}
+
+{% block content_header %}
+    <h3><i class="fa fa-car"></i> {{ car.name }} <span class="comment">{{ car.number }}</span></h3>
+    <button class="btn btn-sm btn-danger" onclick='confirm_delete("{% url 'td:car_delete' cid=car.id %}");'>Удалить</button>
+{% endblock %}
+
+{% block body %}
+    <ul class="nav nav-tabs nav-fill">
+        <li class="nav-item"><a class="nav-link nav-sm" href="{% url 'td:car_info' cid=car.id %}">Инфо</a></li>
+        <li class="nav-item"><a class="nav-link nav-sm" href="{% url 'td:car_docs' cid=car.id %}">Документы</a></li>
+        <li class="nav-item"><a class="nav-link nav-sm" href="{% url 'td:car_proxies' cid=car.id %}">Доверенностити</a></li>
+        <li class="nav-item"><a class="nav-link nav-sm" href="{% url 'td:car_ensurance' cid=car.id %}">Страховка</a></li>
+        <li class="nav-item"><a class="nav-link nav-sm" href="{% url 'td:car_keys' cid=car.id %}">Ключи/Пропуска</a></li>
+        <li class="nav-item"><a class="nav-link nav-sm" href="{% url 'td:car_to' cid=car.id %}">ТО</a></li>
+        <li class="nav-item"><a class="nav-link nav-sm" href="{% url 'td:car_mileage' cid=car.id %}">Пробег/бензин</a></li>
+        <li class="nav-item"><a class="nav-link nav-sm" href="{% url 'td:car_accidents' cid=car.id %}">ДТП</a></li>
+        <li class="nav-item"><a class="nav-link nav-sm" href="{% url 'td:car_penalties' cid=car.id %}">Штрафы</a></li>
+        <li class="nav-item"><a class="nav-link nav-sm" href="{% url 'td:car_tires' cid=car.id %}">Колеса</a></li>
+    </ul>
+    <br/>
+    <div class="container">
+        {% block info_container %}{% endblock %}
+    </div>
+    <script src="{% static 'td/js/car_info_base.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'td/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <a href="{% url 'td:mileage_edit' mid=mileage.id %}" class="btn btn-sm btn-primary">Редактировать пробег</a>
+    <a onclick="if(confirm('Удалить безвозвратно?')){location.href='{% url 'td:mileage_delete' mid=mileage.id %}';}"
+                       class="btn btn-sm btn-danger" title="удалить">Удалить</a>
+{% endblock %}
+
+{% block body %}
+    <br/>
+    <h3>
+        <i class="fa fa-tachometer"></i> Пробег "{{ mileage.car }}"
+    </h3>
+    <br/>
+    <table class="table">
+        <tr>
+            <td><b>Автомобиль</b></td>
+            <td><a href="{% url 'td:car_info' cid=mileage.car_id %}">{{ mileage.car }}</a></td>
+        </tr>
+        <tr>
+            <td><b>Месяц</b></td>
+            <td>{{ mileage.get_month_display }}</td>
+        </tr>
+        <tr>
+            <td><b>Год</b></td>
+            <td>{{ mileage.year }}</td>
+        </tr>
+        <tr>
+            <td><b>Пробег</b></td>
+            <td>{{ mileage.value }} км</td>
+        </tr>
+        <tr>
+            <td><b>Расходы на бензин</b></td>
+            <td>{{ mileage.gasoline|rub }}</td>
+        </tr>
+    </table>
+{% endblock %}

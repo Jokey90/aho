@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block nav-header %}Сервис{% endblock %}
+{% block sidenav %}
+    <ul class="nav flex-column">
+        <li>
+            <p class="text-muted">
+                <span>Отчеты о проверках</span>
+                <a href="{%  url 'service:checklist_new' %}" class="btn btn-secondary btn-sm">
+                    <i class="fa fa-plus"></i>
+                </a>
+            </p>
+        </li>
+        <li class="nav-item"><a href="{%  url 'service:checklist_list' state='issues' %}">С замечаниями</a></li>
+        <li class="nav-item"><a href="{%  url 'service:checklist_list' state='solved' %}">Без замечаний</a></li>
+        <li class="nav-item"><a href="{%  url 'service:checklist_list' %}">Все отчеты</a></li>
+        <li>
+            <p class="text-muted">Замечания из отчетов</p>
+        </li>
+        <li class="nav-item"><a href="{%  url 'service:checklist_value_list' state='unsolved' %}">Неустраненные</a></li>
+        <li class="nav-item"><a href="{%  url 'service:checklist_value_list' state='solved' %}">Устраненные</a></li>
+        <li class="nav-item"><a href="{%  url 'service:checklist_value_list' %}">Все замечания</a></li>
+        <li>
+            <p class="text-muted">
+                <span>Заявки</span>
+                <a href="{%  url 'service:ticket_new' %}" class="btn btn-secondary btn-sm">
+                    <i class="fa fa-plus"></i>
+                </a>
+            </p>
+        </li>
+        <li class="nav-item"><a href="{% url 'service:ticket_list' state='active' %}">В работе</a></li>
+        <li class="nav-item"><a href="{% url 'service:ticket_list' state='closed' %}">Закрытые</a></li>
+        <li class="nav-item"><a href="{% url 'service:ticket_list'%}">Все</a></li>
+        <li><p class="text-muted">Прочее</p></li>
+        <li class="nav-item"><a href="{% url 'service:provider_list' %}">Список провайдеров</a></li>
+        <li class="nav-item"><a href="{% url 'service:settings' %}">Настройки</a></li>
+    </ul>
+{% endblock %}
+{% block body %}
+{% block main %}{% endblock %}
+{% endblock %}
+
+{% block styles %}
+
+{% endblock %}

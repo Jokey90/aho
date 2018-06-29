@@ -1,0 +1,31 @@
+{% extends 'td/car/car_info_base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block info_container %}
+        <table class="table">
+            <tr>
+                <th width="400">Ключи/пропуска для этого автомобиля</th>
+                <td colspan="3"><a href="{% url 'td:key_new' %}?car={{ car.id }}&return=car_keys" class="btn btn-success btn-sm">Добавить ключ/пропуск</a></td>
+            </tr>
+            <tr>
+                <th>Тип</th>
+                <th>Номер</th>
+                <th>Владелец</th>
+                <th>Скан</th>
+                <th width="100">Действия</th>
+            </tr>
+            {% for key in keys %}
+                <tr>
+                    <td width="400"><a href="{% url 'td:key_info' kid=key.id %}">{{ key.get_type_display }}</a></td>
+                    <td>{{ key.number}}</td>
+                    <td><a href="{% url 'main:employee_info' eid=key.owner.id %}">{{ key.owner }}</a></td>
+                    <td>{% image_link key.scan %}</td>
+                    <td>
+                        <a href='{% url 'td:key_edit' kid=key.id %}?return=car_keys' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                        <button onclick='confirm_delete("{% url 'td:key_delete' kid=key.id %}?return=car_keys");' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+{% endblock %}

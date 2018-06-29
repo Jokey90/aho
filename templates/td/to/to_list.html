@@ -1,0 +1,50 @@
+{% extends 'td/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <a href="{% url 'td:to_new' %}" class="btn btn-sm btn-warning">Добавить ТО</a>
+    {% paginator tos %}
+{% endblock %}
+{% block body %}
+    <table class="table table-hover table-xs">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Автомобиль</th>
+                <th>Вид обслуживания</th>
+                <th>План</th>
+                <th>Факт</th>
+                <th>Пробег</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for to in tos %}
+            <tr>
+                <td>
+                    <a href="{% url 'td:to_info' tid=to.id %}">{{ to.date|date:"d.m.Y"  }}</a>
+                </td>
+                <td>
+                    <a href="{% url 'td:car_info' cid=to.car_id %}">{{ to.car }}</a>
+                </td>
+                <td>
+                    {{ to.name }}
+                </td>
+                <td>
+                    {{ to.budget_amount|empty|rub }}
+                </td>
+                <td>
+                    {{ to.fact_amount|empty|rub }}
+                </td>
+                <td>
+                    {{ to.mileage }} км
+                </td>
+                <td width="10%">
+                    <a href='{% url 'td:to_edit' tid=to.id %}' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    <a href='{% url 'td:to_delete' tid=to.id %}' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

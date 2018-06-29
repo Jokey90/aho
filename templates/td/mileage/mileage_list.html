@@ -1,0 +1,51 @@
+{% extends 'td/base.html' %}
+{% block content_header %}
+    <a href="{% url 'td:mileage_new' %}" class="btn btn-sm btn-warning">Добавить пробег</a>
+{% endblock %}
+{% block body %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Год</th>
+                <th>Месяц</th>
+                <th>Автомобиль</th>
+                <th>Пробег</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for mileage in mileages %}
+            <tr>
+                <td>
+                    {{ mileage.year }}
+                </td>
+                <td>
+                    {{ mileage.get_month_display }}
+                </td>
+                <td>
+                    <a href="{% url 'td:car_info' cid=mileage.car_id %}">{{ mileage.car }}</a>
+                </td>
+                <td>
+                    <a href="{% url 'td:mileage_info' mid=mileage.id %}">{{ mileage.value }} км</a>
+                </td>
+                <td width="10%">
+                    <a href='{% url 'td:mileage_edit' mid=mileage.id %}' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    <button onclick="if(confirm('Удалить безвозвратно?')){location.href='{% url 'td:mileage_delete' mid=mileage.id %}';}"
+                       class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if mileages.has_other_pages %}
+        {% if mileages.has_previous %}
+            <a class="btn btn-secondary" href="?page={{ mileages.previous_page_number }}"><</a>
+        {% endif %}
+        <span class="current">
+            стр {{ mileages.number }} из {{ mileages.paginator.num_pages }}.
+        </span>
+        {% if mileages.has_next %}
+            <a class="btn btn-secondary" href="?page={{ mileages.next_page_number }}">></a>
+        {% endif %}
+    {% endif %}
+{% endblock %}

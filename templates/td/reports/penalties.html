@@ -1,0 +1,69 @@
+{% extends 'td/base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block body %}
+    <h4>Отчет о штрафах</h4><br/>
+
+    <table class="table table-bordered table-xs table-hover">
+        <thead>
+            <tr class="table-success">
+                <th>№</th>
+                <th>Марка автомобиля</th>
+                <th>Гос. № а/м</th>
+                <th>Номер постановления</th>
+                <th>Собственник</th>
+                <th>Дата</th>
+                <th>Нарушение</th>
+                <th>Сумма, руб.</th>
+                <th>Дата передачи водителю</th>
+                <th>Статус</th>
+                <th>Дата оплаты</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% regroup penalties by car as penalties_by_car %}
+            {% for car_penalties in penalties_by_car %}
+                <tr class="table-warning">
+                    <th></th>
+                    <th>{{ car_penalties.grouper.name }}</th>
+                    <th>{{ car_penalties.grouper.number }}</th>
+                    <th colspan="3"></th>
+                    <th>Общая сумма:</th>
+                    <th>{{ car_penalties.list|sum_vals:"amount" }}</th>
+                    <th>Оплачено:</th>
+                    <th>{{ car_penalties.list|count_vals:"payed" }} / {{ car_penalties.list|length }}</th>
+                    <th></th>
+                </tr>
+                {% for row in car_penalties.list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ row.car.name }}</td>
+                        <td>{{ row.car.number }}</td>
+                        <td>{{ row.number }}</td>
+                        <td>{{ row.car.get_ownership_type_display }}</td>
+                        <td>{{ row.date|date:"d.m.Y" }}</td>
+                        <td>{{ row.description }}</td>
+                        <td>{{ row.amount }}</td>
+                        <td>{{ row.obtain_date|date:"d.m.Y" }}</td>
+                        <td>{% if row.payed %}Оплачен{% endif %}</td>
+                        <td>{{ row.pay_date|date:"d.m.Y" }}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="11">&nbsp;</td>
+                </tr>
+            {% endfor %}
+            <tr class="table-warning">
+                <th></th>
+                <th>ИТОГО</th>
+                <th colspan="4"></th>
+                <th>Общая сумма:</th>
+                <th>{{ penalties|sum_vals:"amount" }}</th>
+                <th>Оплачено:</th>
+                <th>{{ penalties|count_vals:"payed" }} / {{ penalties|length }}</th>
+                <th></th>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

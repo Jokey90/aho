@@ -1,0 +1,16 @@
+{% extends 'td/base.html' %}
+{% load staticfiles %}
+
+{% block content_header %}
+    <h3><i class="fa fa-car"></i> {{ car.name }} <span class="comment">{{ car.number }}</span></h3>
+    <div>
+        <input type="submit" value="Сохранить" class="btn btn-sm btn-success" form="car" onclick="saving=true;"/>
+        <a href="{% url 'td:car_info' cid=car.id %}" class="btn btn-sm btn-secondary">Отмена</a>
+    </div>
+{% endblock %}
+
+{% block body %}
+    {% include 'canedar_static.html' %}
+    {% block form %}{% endblock %}
+    <script src="{% static 'td/js/car_edit_base.js' %}"></script>
+{% endblock %}

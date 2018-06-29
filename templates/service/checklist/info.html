@@ -1,0 +1,88 @@
+{% extends 'service/base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <h3>
+        <i class="fa fa-file-text-o" aria-hidden="true"></i> Чек лист обхода помещений
+    </h3>
+    <span>
+        <a href="{% url 'service:checklist_edit' uid=checklist.id %}" class="btn btn-sm btn-info">Редактировать</a>
+        <a href="{% url 'service:checklist_xls' uid=checklist.id %}" class="btn btn-sm btn-secondary">Выгрузить</a>
+    </span>
+{% endblock %}
+
+{% block main %}
+    <table class="table">
+        <tr>
+            <th width="250">Дата обхода: </th>
+            <td>{{ checklist.date|date:"d.m.Y" }}</td>
+        </tr>
+        <tr>
+            <th>Этаж: </th>
+            <td>{{ checklist.floor.name }}</td>
+        </tr>
+        <tr>
+            <th>Замечаний всего:</th>
+            <td>{{ checklist.issues_count }}</td>
+        </tr>
+        <tr>
+            <th>Устранено:</th>
+            <td>{{ checklist.issues_solved }}</td>
+        </tr>
+    </table>
+    <br/>
+    <table class='table'>
+    {% for zone in checklist_zones %}
+        <tr>
+            <td width="50">
+                {% if zone.issues.count == 0 and zone.unsolved_count == 0 %}
+                    <span class="badge badge-success badge-pill"><i class="fa fa-check" aria-hidden="true"></i></span>
+                {% elif zone.unsolved_count > 0 %}
+                    <span class="badge badge-danger badge-pill"><i class="fa fa-times" aria-hidden="true"></i></span>
+                {% elif zone.unsolved_count == 0 %}
+                    <span class="badge badge-warning badge-pill"><i class="fa fa-check-square-o" aria-hidden="true"></i></span>
+                {% endif %}
+            </td>
+            <td>
+                <h4>
+                    {{ zone.name }}
+                </h4>
+                {% if zone.issues.count == 0 %}
+                    <span class="comment">замечаний нет</span>
+                {% endif %}
+                {% for row in zone.issues %}
+                    {% if row.solve_date is None %}
+                    <div class="card card-left-danger">
+                        <div class="card-block">
+                            <p class="card-title">
+                               <b><i class="fa fa-square-o" aria-hidden="true"></i> {{ row.row.name }}</b>
+                            </p>
+                            <p class="card-text">{{ row.comment }}</p>
+                            {% image_link row.photo 'Фото' 'card-link' %}
+                            <a href="{% url 'service:checklist_value_info' uid=row.id %}" class="card-link">Просмотр</a>
+                            <a href="{% url 'service:checklist_value_solve' uid=row.id %}?return=checklist_info" class="card-link">Устранить</a>
+                            {% if not row.has_ticket %}
+                                <a href="{% url 'service:ticket_new' %}?issue_id={{ row.id }}" class="card-link">Создать заявку</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% else %}
+                        <div class="card  card-left-success">
+                            <div class="card-block">
+                                <p class="card-title">
+                                    <b><i class="fa fa-check-square-o" aria-hidden="true"></i> {{ row.row.name }}</b>
+                                </p>
+                                <p class="card-text">{{ row.comment }}</p>
+                                {% image_link row.photo 'Фото' 'card-link' %}
+                                <a href="{% url 'service:checklist_value_info' uid=row.id %}" class="card-link">Просмотр</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+
+{% endblock %}

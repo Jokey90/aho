@@ -1,0 +1,44 @@
+{% extends 'td/base.html' %}
+{% block content_header %}
+    <a href="{% url 'td:driver_new' %}" class="btn btn-sm btn-warning">Добавить водителя</a>
+    {% if show_inactive %}
+        <a href="{% url 'td:driver_list'  %}" class="btn btn-sm btn-secondary">Показать активных</a>
+    {% else %}
+        <a href="{% url 'td:driver_list_inactive'  %}" class="btn btn-sm btn-secondary">Показать неактивных</a>
+    {% endif %}
+{% endblock %}
+{% block body %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ФИО сотрудника</th>
+                <th>Телефон</th>
+                <th>Доверенности</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for row in drivers %}
+            <tr>
+                <td>
+                    <a href="{% url 'td:driver_info' did=row.driver.id %}">{{ row.driver.emp.last_name }} {{ row.driver.emp.first_name }} {{ row.driver.emp.middle_name }}</a>
+                </td>
+                <td>
+                    {{ row.driver.phone }}
+                </td>
+                <td>
+                    {{ row.proxies.count }}
+                </td>
+                <td width="10%">
+                    <a href='{% url 'td:driver_edit' did=row.driver.id %}' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    {% if row.driver.active %}
+                        <a href='{% url 'td:driver_delete' did=row.driver.id %}' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></a>
+                    {% else %}
+                        <a href='{% url 'td:driver_delete' did=row.driver.id %}' class="btn btn-sm btn-warning" title="восстановить"><i class="fa fa-refresh"></i></a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

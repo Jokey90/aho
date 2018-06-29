@@ -1,0 +1,67 @@
+{% extends 'mobile/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <h3>
+        <i class="fa fa-file"></i> {{ bill_file.name }}
+    </h3>
+    <span>
+        <a href="{% url 'mobile:bill_file_edit' uid=bill_file.id %}" class="btn btn-sm btn-info">Редактировать</a>
+        <a class="btn btn-sm btn-danger" href="{% url 'mobile:bill_file_delete' uid=bill_file.id %}?return=contract_info">Удалить</a>
+    </span>
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <tr>
+            <th>{% get_label bill_file 'year' %}</th>
+            <td>{{ bill_file.year }}</td>
+        </tr>
+        <tr>
+            <th>{% get_label bill_file 'month' %}</th>
+            <td>{{ bill_file.get_month_display }}</td>
+        </tr>
+        <tr>
+            <th>Сумма счета</th>
+            <td>{{ bill_file.amount|rub }}</td>
+        </tr>
+        <tr>
+            <th>{% get_label bill_file 'file' %}</th>
+            <td>{% image_link bill_file.file %}</td>
+        </tr>
+    </table>
+    <hr/>
+    <h4>Детализация:</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Номер</th>
+                <th>SIM-карта</th>
+                <th>Договор</th>
+                <th>Период</th>
+                <th>Сумма</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bill in bill_file.bill_set.all %}
+                <tr {% if bill.sim is None %} class="table-warning" {% endif %}>
+                    <td>{{ bill.number }}</td>
+                    <td>
+                        {% if bill.sim %}
+                            <a href="{% url 'mobile:sim_info' uid=bill.sim.id %}">{{ bill.sim }}</a>
+                        {% endif %}
+                    </td>
+                    <td>{{ bill.contract }}</td>
+                    <td>{{ bill.period }}</td>
+                    <td>{{ bill.amount|rub }}</td>
+                    <td>
+                        {% if bill.sim is None %}
+                            <a href="{% url 'mobile:sim_generate' bill_id=bill.id %}" class="btn btn-secondary btn-sm">+<i class="fa fa-phone"></i></a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

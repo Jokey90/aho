@@ -1,0 +1,253 @@
+@import 'messages'
+@import 'forms'
+@import 'sidenav'
+@import 'card-list'
+
+html
+  height: 100%
+
+body
+  margin: 0 !important
+  height: 100%
+  width: 100%
+  display: flex
+  flex-direction: column
+
+  &>div.body
+    flex: 1 1 auto
+    position: relative
+    overflow: hidden
+    display: flex
+
+nav.nav-top
+
+  flex: 0 0 auto
+
+  .navbar-brand
+    line-height: 1.5em
+    cursor: pointer
+
+  div.nav-flex
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+
+  &.bg-td
+    background-color: #8af0d9
+    color: #000
+
+    li.nav-item
+      a.nav-link
+        color: #0275d8
+
+        &:hover
+          color: #014c8c
+
+      &.active
+        a.nav-link
+          color: #000
+
+
+  &.bg-nsd
+    background-color: #de575b
+    color: rgba(255,255,255,.5)
+
+div.main-content
+  flex-grow: 1
+  overflow-y: auto
+  padding: 0px 15px 0px 15px
+
+.col-container
+  padding-top: 10px
+
+div.centered-container
+  display: flex
+  width: 100%
+  height: 85%
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  text-align: center
+
+  table
+    max-width: 600px
+
+  a.btn
+    margin-bottom: 10px
+
+a.nav-sm
+  padding: 0.5em 0.5em
+  font-size: 0.9em
+
+span.tree-padding
+  width: 30px
+  display: inline-block
+
+span.comment
+  opacity: 0.35
+  cursor: default
+
+span.date-expiring
+  background-color: #ffd2a8
+
+span.date-expired
+  background-color: #ff8b86
+
+
+div.calendar
+  caption
+    caption-side: top
+
+.btn-wide
+  width: 100%
+
+table.table-xs
+  td, th
+    padding: 2px
+    font-size: 12px
+
+div.card
+  margin-bottom: 15px
+
+div.card-td
+  .card-danger
+    background-color: #d26059
+    border-color: #d26059
+    color: #fff
+
+  .card-warning
+    background-color: #f0ad4e
+    border-color: #f0ad4e
+    color: #000
+
+  .card-inverse
+    color: #fff
+
+  .card-success
+    background-color: #ace6ac
+    border-color: #ace6ac
+
+div.content-header
+  padding: 20px 0
+  width: 100%
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+
+  a.btn-sm
+    max-height: 1.75rem
+
+  button.btn-sm
+    max-height: 1.75rem
+
+  &.mobile
+    flex-direction: column
+
+tr.expired td
+  background-color: #dec8c8
+
+
+th.header, tr.header>th, td.header
+  text-align: center
+
+
+div.notification-box
+  width: 100%
+  display: flex
+  flex-direction: row
+  flex-wrap: nowrap
+  margin: 10px 0 10px 0
+
+  div.marker
+    width: 80px
+    min-width: 80px
+    flex-grow: 0
+    border-radius: calc(.25rem - 1px) 0 0 calc(.25rem - 1px)
+    display: inline-flex
+    flex-direction: column
+    justify-content: center
+    text-align: center
+
+    &.danger
+      background-color: #d26059
+      color: #fff
+
+    &.warning
+      background-color: #f0ad4e
+      color: #000
+
+  div.content
+    flex-grow: 1
+    display: inline-flex
+    flex-direction: column
+    justify-content: space-between
+
+    div.notification-header
+      padding: 5px 10px
+      font-weight: 500
+      border-top: 1px solid #bbb
+
+    div.notification-body
+      padding: 5px 10px
+      bottom: 0
+      width: 100%
+      border-bottom: 1px solid #bbb
+      color: #888
+
+  div.actions
+    padding: 5px 10px
+    width: 150px
+    min-width: 150px
+    flex-grow: 0
+    border-radius: 0 calc(.25rem - 1px) calc(.25rem - 1px) 0
+    border: 1px solid #bbb
+    display: inline-flex
+    flex-direction: column
+    justify-content: space-around
+    font-size: 0.9em
+    line-height: 25px
+
+tr.state
+  text-align: center
+
+  &.state-success
+    background-color: #8d8
+
+  &.state-danger
+    background-color: #d88
+
+.badge-secondary
+  background-color: #FFF
+  color: #222
+  border: 1px solid rgba(0,0,0,.125)
+
+div.card
+  &.card-left-success
+    border-left: 3px solid #5cb85c
+
+  &.card-left-danger
+    border-left: 3px solid #d9534f
+
+.vertical-middle
+  vertical-align: middle
+
+
+
+/* ------------------------ mobile section ---------------------------- */
+
+@media only screen and (max-device-width: 640px)
+  table.table-xs
+    font-size: 9pt
+
+  table.table-mobile
+    max-width: 100%
+
+    tr
+      display: block
+      border-bottom: 1px solid rgba(0,0,0,0.25)
+    th
+      display: block
+      border: none
+    td
+      display: block
+      border: none

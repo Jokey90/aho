@@ -1,0 +1,11 @@
+{% extends 'td/base.html' %}
+{% block body %}
+    <h4>Просроченные:</h4>
+    {% for warning in warnings_expired %}
+        {% include 'td/notification.html' %}
+    {% endfor %}
+    <h4>Приближающиеся:</h4>
+    {% for warning in warnings_upcoming %}
+        {% include 'td/notification.html' %}
+    {% endfor %}
+{% endblock %}

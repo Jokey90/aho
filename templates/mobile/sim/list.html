@@ -1,0 +1,58 @@
+{% extends 'mobile/base.html' %}
+{% load extra_tags %}
+{% block content_header %}
+    <a href="{% url 'mobile:sim_new' %}" class="btn btn-sm btn-warning">Добавить SIM-карту</a>
+    {% if show_inactive %}
+        <a href="{% url 'mobile:sim_list'  %}" class="btn btn-sm btn-secondary">Показать активные</a>
+    {% else %}
+        <a href="{% url 'mobile:sim_list_inactive'  %}" class="btn btn-sm btn-secondary">Показать неактивные</a>
+    {% endif %}
+    {% paginator sims %}
+    <form action="" method="get" class="form-inline form" style="display: inline-block;">
+        {{ search_form.search }}
+    </form>
+    <a href="{% url 'mobile:sim_list' %}" class="btn btn-sm btn-secondary btn-sm">Cброить</a>
+{% endblock %}
+{% block body %}
+    <table class="table table-hover table-sm">
+        <thead>
+            <tr>
+                <th>Номер</th>
+                <th>Текущий владелец</th>
+                <th>Текущий лимит</th>
+                <th>Тариф</th>
+                <th>Комментарий</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sim in sims %}
+            <tr>
+                <td><a href="{% url 'mobile:sim_info' uid=sim.id %}">{{ sim }}</a></td>
+                <td>{{ sim.current_owner|empty }}</td>
+                <td>
+                    {% if not sim.limit_infinite %}
+                        {{ sim.limit }}
+                    {% else %}
+                        Безлимит
+                    {% endif %}
+                </td>
+                <td>{{ sim.tariff_name }}</td>
+                <td>{{ sim.comment }}</td>
+                <td width="15%">
+                    <a href='{% url 'mobile:sim_edit' uid=sim.id %}' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    <a href='{% url 'mobile:transition_new' uid=sim.id %}' class="btn btn-sm btn-secondary" title="передать"><i class="fa fa-exchange"></i></a>
+                    {% if sim.active %}
+                        <a href="{% url 'mobile:sim_delete' uid=sim.id %}" class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></a>
+                    {% else %}
+                        <a href="{% url 'mobile:sim_delete' uid=sim.id %}" class="btn btn-sm btn-warning" title="восстановить"><i class="fa fa-refresh"></i></a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br/>
+    {% paginator sims %}
+    <br/><br/>
+{% endblock %}

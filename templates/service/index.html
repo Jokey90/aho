@@ -1,0 +1,25 @@
+{% extends 'service/base.html' %}
+{% block main %}
+    <div class="centered-container">
+        <table class="table">
+            <tr>
+                <td width="50%" class="centered">
+                    <h4>Отчеты</h4>
+                    <a href="{% url 'service:checklist_new' %}" class="btn btn-sm btn-outline-info btn-wide"><i class="fa fa-plus"></i> новый</a>
+                    <a href="{% url 'service:checklist_list' state='issues' %}" class="btn btn-sm btn-outline-warning btn-wide"><i class="fa fa-exclamation"></i> с замечаниями</a>
+                    <a href="{% url 'service:checklist_value_list' state='unsolved' %}" class="btn btn-sm btn-outline-danger btn-wide"><i class="fa fa-fire"></i> замечания</a>
+                </td>
+                <td>
+                    <h4>Заявки</h4>
+                    <a href="{% url 'service:ticket_new' %}" class="btn btn-outline-info btn-sm btn-wide"><i class="fa fa-plus"></i> новая</a>
+                    <a href="{% url 'service:ticket_list' state='active' %}" class="btn btn-outline-warning btn-sm btn-wide"><i class="fa fa-exclamation"></i> в работе</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <a href="{% url 'service:provider_list' %}">Провайдеры услуг</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}

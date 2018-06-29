@@ -1,0 +1,33 @@
+{% extends 'mobile/base.html' %}
+{% load staticfiles %}
+
+{% block content_header %}
+    <h3>
+        <i class="fa fa-microchip" aria-hidden="true"></i> {{ sim }}
+        {% if sim.active == False %}
+            <span class="comment">(не активна)</span>
+        {% endif %}
+    </h3>
+    <span>
+        <a href="{% url 'mobile:sim_edit' uid=sim.id %}" class="btn btn-sm btn-info">Редактировать</a>
+        {% if sim.active %}
+            <a class="btn btn-sm btn-danger" href="{% url 'mobile:sim_delete' uid=sim.id %}?return=sim_info">Удалить</a>
+        {% else %}
+            <a class="btn btn-sm btn-warning" href="{% url 'mobile:sim_delete' uid=sim.id %}?return=sim_info">Восстановить</a>
+        {% endif %}
+    </span>
+{% endblock %}
+
+{% block body %}
+    <ul class="nav nav-tabs nav-fill">
+        <li class="nav-item"><a class="nav-link" href="{% url 'mobile:sim_info' uid=sim.id %}">Инфо</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'mobile:sim_transitions' uid=sim.id %}">Передачи</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'mobile:sim_bills' uid=sim.id %}">Расходы</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'mobile:sim_limits' uid=sim.id %}">Лимиты</a></li>
+    </ul>
+    <br/>
+    <div class="container">
+        {% block info_container %}{% endblock %}
+    </div>
+    <!--<script src="{% static 'td/js/car_info_base.js' %}"></script>-->
+{% endblock %}

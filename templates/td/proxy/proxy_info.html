@@ -1,0 +1,64 @@
+{% extends 'td/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <a href="{% url 'td:proxy_edit' pid=proxy.id %}" class="btn btn-sm btn-primary">Редактировать доверенность</a>
+    <a href="{% url 'td:proxy_tracking_new' pid=proxy.id %}" class="btn btn-sm btn-secondary">Передать</a>
+    <a href="{% url 'td:proxy_delete' pid=proxy.id %}" class="btn btn-sm btn-danger">Удалить доверенность</a>
+{% endblock %}
+
+{% block body %}
+    <br/>
+    <h3><i class="fa fa-drivers-license"></i> Доверенность</h3>
+    <br/>
+    <table class="table">
+        <tr>
+            <td width="300">{% get_label proxy 'type' %}</td><td>{{ proxy.get_type_display }}</td>
+        </tr>
+        <tr>
+            <td>{% get_label proxy 'driver' %}</td><td><a href="{% url 'td:driver_info' did=proxy.driver.id %}">{{ proxy.driver.short_name }}</a></td>
+        </tr>
+        <tr>
+            <td>{% get_label proxy 'car' %}</td>
+            <td><a href="{% url 'td:car_info' cid=proxy.car.id %}">{{ proxy.car.name }}</a>
+                <span class="comment">{{ proxy.car.number }}</span></td>
+        </tr>
+        <tr>
+            <td>{% get_label proxy 'start_date' %}</td>
+            <td>{{ proxy.start_date }}</td>
+        </tr>
+        <tr>
+            <td>{% get_label proxy 'end_date' %}</td>
+            <td>{{ proxy.end_date }}</td>
+        </tr>
+        <tr>
+            <td>{% get_label proxy 'scan' %}</td>
+            <td>{% image_link proxy.scan %}</td>
+        </tr>
+    </table>
+    <br/>
+    <h4>История передач</h4>
+    <table class="table">
+        <tr>
+            <th>Дата</th>
+            <th>Кому передано</th>
+            <th>Действия</th>
+        </tr>
+        {% for record in tracking %}
+            <tr>
+                <td>
+                    {{ record.date }}
+                </td>
+                <td>
+                    {% if record.owner %}
+                        <a href="{% url 'td:driver_info' did=record.owner.id %}">{{ record.owner }}</a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href='{% url 'td:proxy_tracking_edit' tid=record.id %}' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    <button onclick='confirm_delete("{% url 'td:proxy_tracking_delete' tid=record.id %}");' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

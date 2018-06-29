@@ -1,0 +1,39 @@
+{% extends 'mobile/base.html' %}
+{% load extra_tags %}
+{% block content_header %}
+    <a href="{% url 'mobile:transition_new' %}" class="btn btn-sm btn-warning">Передать SIM-карту</a>
+    {% paginator transitions %}
+{% endblock %}
+{% block body %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>SIM-карта</th>
+                <th>Новый владелец</th>
+                <th>Старый владелец</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for transition in transitions %}
+            <tr>
+                <td>{{ transition.date }}</td>
+                <td><a href="{% url 'mobile:sim_info' uid=transition.sim_id %}">{{ transition.sim }}</a></td>
+                <td>
+                    <a href="{% url 'main:employee_info' eid=transition.employee_id %}">{{ transition.employee }}</a>
+                </td>
+                <td>
+                    {% if transition.prev_owner %}
+                        <span class="comment"><a href="{% url 'main:employee_info' eid=transition.prev_owner.id %}">{{ transition.prev_owner }}</a></span>
+                    {% endif %}
+                </td>
+                <td width="15%">
+                    <a href='{% url 'mobile:transition_edit' uid=transition.id %}' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    <a href="{% url 'mobile:transition_delete' uid=transition.id %}" class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'td/base.html' %}
+{% block content_header %}
+    <a href="#" class="btn btn-warning">какая-то кнопка</a>
+{% endblock %}
+{% block body %}
+    <h3>{{ name }} {{ year }}</h3>
+    <table class="table table-hover table-bordered table-xs">
+        <thead>
+            <tr>
+                <th>Автомобиль</th>
+                <th>Январь</th>
+                <th>Февраль</th>
+                <th>Март</th>
+                <th>Апрель</th>
+                <th>Май</th>
+                <th>Июнь</th>
+                <th>Июль</th>
+                <th>Август</th>
+                <th>Сентябрь</th>
+                <th>Октябрь</th>
+                <th>Ноябрь</th>
+                <th>Декабрь</th>
+                <th>Итого</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for row in data %}
+            <tr>
+                <td>
+                    <b>{{ row.car.name }}</b>
+                </td>
+                {% for val in row.values %}
+                    <td>{{ val }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        <tr>
+            <td><b>Итого</b></td>
+            {% for val in totals %}
+                <td>{{ val }}</td>
+            {% endfor %}
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}

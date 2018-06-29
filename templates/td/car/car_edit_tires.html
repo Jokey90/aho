@@ -1,0 +1,22 @@
+{% extends 'td/car/car_edit_base.html' %}
+{% load staticfiles %}
+{% block form %}
+    {{ form.media }}
+    <form class="form" action="" id="car" method="post"  enctype="multipart/form-data">
+        {% csrf_token %}
+        <table class="table">
+            <tr><th width="400">Колеса</th><th></th></tr>
+            {% with form.tires_storage as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.tires_comment as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            <tr><th colspan="2">Летние</th></tr>
+            {% with form.tires_summer_state as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.tires_summer_date as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.tires_summer_photo as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            <tr><th colspan="2">Зимние</th></tr>
+            {% with form.tires_winter_state as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.tires_winter_date as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+            {% with form.tires_winter_photo as field %}<tr><td width="40%">{{ field.label_tag }}</td><td>{{ field }}</td></tr>{% endwith %}
+        </table>
+
+    </form>
+{% endblock %}

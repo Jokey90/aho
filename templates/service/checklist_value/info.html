@@ -1,0 +1,81 @@
+{% extends 'service/base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <h3>
+        {% if value.has_issues and value.solve_date is None %}
+            <i class="fa fa-square-o" aria-hidden="true"></i>
+        {% else %}
+            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+        {% endif %}
+
+        {{ value.row.zone }} - {{ value.row.name }}
+    </h3>
+    <span>
+        <a href="{% url 'service:checklist_value_edit' uid=value.id %}" class="btn btn-sm btn-info">Редактировать</a>
+        {% if value.solve_date is None %}
+            <a href="{% url 'service:checklist_value_solve' uid=value.id %}" class="btn btn-sm btn-success">Устранить</a>
+            {% if not value.has_ticket %}
+                <a href="{% url 'service:ticket_new' %}?issue_id={{ value.id }}" class="btn btn-sm btn-secondary">Создать заявку</a>
+            {% endif %}
+        {% endif %}
+    </span>
+{% endblock %}
+
+{% block main %}
+    <table class="table table-mobile">
+        <tr>
+            <th width="250">Дата обхода: </th>
+            <td>
+                {{ value.checklist.date|date:"d.m.Y" }}
+                (<a href="{% url 'service:checklist_info' uid=value.checklist_id %}">просмотр отчета</a>)
+            </td>
+        </tr>
+        <tr>
+            <th>Этаж: </th>
+            <td>{{ value.checklist.floor }}</td>
+        </tr>
+        <tr>
+            <th>Замечания: </th>
+            <td>
+                {% if value.has_issues %}
+                    Есть
+                {% else %}
+                    Нет
+                {% endif %}
+            </td>
+        </tr>
+        {% if value.get_ticket %}
+            <tr>
+                <th>
+                    Связанная заявка:
+                </th>
+                <td>
+                    <a href="{% url 'service:ticket_info' uid=value.get_ticket.id %}">{{ value.get_ticket }}</a>
+                </td>
+            </tr>
+        {% endif %}
+        <tr>
+            <th>Дата устранения: </th>
+            <td>
+                {% if value.solve_date %}
+                    {{ value.solve_date|date:"d.m.Y" }}
+                {% elif value.solve_date is None and value.has_issues %}
+                    Не устранено
+                {% else %}
+                    Нечего устранять
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Примечание: </th>
+            <td>{{ value.comment }}</td>
+        </tr>
+        <tr>
+            <th>Фото: </th>
+            <td>{% image value.photo 500 %}</td>
+        </tr>
+    </table>
+
+{% endblock %}

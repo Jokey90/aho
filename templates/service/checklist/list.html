@@ -1,0 +1,74 @@
+{% extends 'service/base.html' %}
+{% load extra_tags %}
+
+{% block content_header %}
+    <h3>{{ title }}</h3>
+    <span>
+        {% paginator checklists %}
+        <a href="{% url 'service:checklist_new' %}" class="btn btn-sm btn-warning">Добавить отчет</a>
+    </span>
+{% endblock %}
+
+{% block main %}
+    {% if is_mobile %}
+        {% for checklist in checklists %}
+            <div class="card-list-item">
+                <div class="header">
+                    <a href="{% url 'service:checklist_info' uid=checklist.id %}">{{ checklist.date|date:"d.m.Y" }} {{ checklist.floor }}</a>
+                </div>
+                <div class="body">
+                    Статус:
+                    {% if checklist.issues_count == 0 %}
+                        <b class="text-success">Замечаний нет</b>
+                    {% elif checklist.issues_solved == checklist.issues_count %}
+                        <b class="text-success">Замечания устранены</b>
+                    {% else %}
+                        <b class="text-danger">Есть замечания</b>
+                    {% endif %}
+                    <br/>
+                    Замечаний устранено/всего:
+                    <b>{{ checklist.issues_solved }}/{{ checklist.issues_count }}</b>
+                </div>
+                <div class="footer">
+                    <a href="{% url 'service:checklist_edit' uid=checklist.id %}" class="btn btn-sm btn-info" title="Редактировать"><i class="fa fa-pencil"></i> Редактировать</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Этаж</th>
+                    <th>Статус</th>
+                    <th>Замечаний всего</th>
+                    <th>Замечаний устанено</th>
+                    <th width="100">Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for checklist in checklists %}
+                <tr>
+                    <td><a href="{% url 'service:checklist_info' uid=checklist.id %}">{{ checklist.date|date:"d.m.Y" }}</a></td>
+                    <td>{{ checklist.floor }}</td>
+                    <td
+                        {% if checklist.issues_count == 0 %}
+                            class="table-success">Замечаний нет
+                        {% elif checklist.issues_solved == checklist.issues_count %}
+                            class="table-success">Замечания устранены
+                        {% else %}
+                            class="table-danger">Есть замечания
+                        {% endif %}
+                    </td>
+                    <td>{{ checklist.issues_count }}</td>
+                    <td>{{ checklist.issues_solved }}</td>
+                    <td><a href="{% url 'service:checklist_edit' uid=checklist.id %}" class="btn btn-sm btn-info" title="Редактировать"><i class="fa fa-pencil"></i></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    <br/>
+    {% paginator checklists %}
+    <br/><br/>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'td/base.html' %}
+{% block actions %}
+    <a href="{% url 'td:car_new' %}" class="btn btn-warning">Создать автомобиль</a>
+    {% if show_inactive %}
+        <a href="{% url 'td:car_list'  %}" class="btn btn-secondary">Показать активные</a>
+    {% else %}
+        <a href="{% url 'td:car_list_inactive'  %}" class="btn btn-secondary">Показать неактивные</a>
+    {% endif %}
+{% endblock %}
+{% block main %}
+    {% for car in cars %}
+        <div class="card card-block">
+            <div class="col-sm-10">
+                <h3 class="card-title">
+                    <a href="{% url 'td:car_info' cid=car.id %}">{{ car.name }}</a>
+                    <span class="comment">{{ car.number }}</span>
+                </h3>
+                <table class="table">
+                    <tr>
+                        <td width="230"><b>Руководитель/пассажир</b></td>
+                        <td>
+                            {% if car.owner %}
+                                <a href="{% url 'main:employee_info' eid=car.owner.id %}">{{ car.owner }}</a> ({{ car.owner.department }})
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Водитель/ответственный</b></td>
+                        <td>
+                            <ul class="list-unstyled">
+                                {% for driver in car.drivers %}
+                                    <li>
+                                        <a href="{% url 'td:driver_info' did=driver.id %}">{{ driver.name }}</a>
+                                        <span class="comment">
+                                            (доверенность на управление до {{ driver.end_date }})
+                                        </span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                    <!--<tr
+                    {% if car.warnings %} class="bg-warning" {% endif %}
+                    >
+                        <td>
+                            <b>Предупреждения</b>
+                        </td>
+                        <td>
+                            {% if car.warnings %}
+                                <ul>
+                                    {% for warning in car.warnings %}
+                                        <li>{{ warning }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {%  else %}
+                                нет
+                            {%  endif %}
+                        </td>
+                    </tr>-->
+                </table>
+            </div>
+            <div class="col-sm-2">
+                <a href='{% url 'td:car_edit' cid=car.id %}' class="btn btn-sm btn-primary btn-wide" title="редактировать"><i class="fa fa-pencil"></i> изменить</a><br/>
+                {% if car.active %}
+                    <a href='{% url 'td:car_delete' cid=car.id %}' class="btn btn-sm btn-danger btn-wide" title="удалить"><i class="fa fa-trash"></i> удалить</a>
+                {% else %}
+                    <a href='{% url 'td:car_delete' cid=car.id %}' class="btn btn-sm btn-warning btn-wide" title="восстановить"><i class="fa fa-refresh"></i> восстановить</a>
+                {% endif %}
+                <hr/>
+                <!--<a href="{% url 'td:expense_new' %}?car={{ car.id }}" class="btn btn-sm btn-secondary btn-wide">внести расход</a><br/>-->
+                <a href="{% url 'td:mileage_new' %}?car={{ car.id }}" class="btn btn-sm btn-secondary btn-wide">внести пробег</a><br/>
+                <a href="{% url 'td:proxy_new' %}?car={{ car.id }}" class="btn btn-sm btn-secondary btn-wide">выдать дов-ть</a><br/>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

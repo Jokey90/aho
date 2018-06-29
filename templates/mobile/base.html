@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block sidenav %}
+    <ul class="nav flex-column">
+        <li><p class="text-muted">Главная</p></li>
+        <li class="nav-item"><a href="{% url 'mobile:sim_list' %}">Список номеров</a></li>
+        <li class="nav-item"><a href="{% url 'mobile:transition_list' %}">Журнал передач</a></li>
+        <li class="nav-item"><a href="{% url 'mobile:contract_list' %}">Договоры</a></li>
+        <li class="nav-item"><a href="{% url 'mobile:tariff_list' %}">Тарифы</a></li>
+        <li class="nav-item"><a href="{% url 'mobile:budget_list' %}">Бюджет</a></li>
+        <li class="nav-item"><a href="{% url 'mobile:bill_file_list' %}">Счета</a></li>
+        <li><p class="text-muted">Операции</p></li>
+        <li class="nav-item"><a href="{% url 'mobile:bill_upload' %}">Загрузка счетов</a></li>
+        <li class="nav-item"><a href="{% url 'mobile:access_sync_prepare' %}">Синхронизация с Access</a></li>
+        <li><p class="text-muted">Отчеты</p></li>
+        <li class="nav-item"><a href="{% url 'mobile:general_report_form' %}">Месячный</a></li>
+        <li class="nav-item"><a href="{% url 'mobile:limit_report_form' %}">Сравнение лимитов</a></li>
+    </ul>
+{% endblock %}
+
+{% block nav-header %}Моб. связь{% endblock %}
+
+{% block styles %}
+    <!--<link rel="stylesheet" href="{% static 'td/css/transport.css' %}">-->
+{% endblock %}

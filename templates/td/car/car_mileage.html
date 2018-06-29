@@ -1,0 +1,31 @@
+{% extends 'td/car/car_info_base.html' %}
+{% load staticfiles %}
+{% load extra_tags %}
+
+{% block info_container %}
+    <table class="table">
+        <tr>
+            <th colspan="2">Информация о пробегах по месяцам</th>
+            <td><a href="{% url 'td:mileage_new' %}?car={{ car.id }}&return=car_mileage" class="btn btn-primary btn-sm">Добавить</a></td>
+        </tr>
+        <tr>
+            <th>Месяц и год</th>
+            <th>Показания одометра</th>
+            <th>Пробег отн. прошлого показания</th>
+            <th>Расходы на бензин</th>
+            <th width="100">Действия</th>
+        </tr>
+        {% for mileage in mileage_list %}
+            <tr>
+                <td><a href="{% url 'td:mileage_info' mid=mileage.id %}">{% month mileage.month %} {{ mileage.year }}</a></td>
+                <td>{{ mileage.value }}</td>
+                <td>{{ mileage.diff }}</td>
+                <td>{{ mileage.gasoline|rub }}</td>
+                <td>
+                    <a href='{% url 'td:mileage_edit' mid=mileage.id %}?return=car_mileage' class="btn btn-sm btn-primary" title="редактировать"><i class="fa fa-pencil"></i></a>
+                    <button onclick='confirm_delete("{% url 'td:mileage_delete' mid=mileage.id %}?return=car_mileage");' class="btn btn-sm btn-danger" title="удалить"><i class="fa fa-trash"></i></button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

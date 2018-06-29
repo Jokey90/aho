@@ -1,0 +1,78 @@
+{% extends 'td/base.html' %}
+{% load staticfiles %}
+
+{% block actions %}
+    <a href="{% url 'td:car_edit' cid=car.id %}" class="btn btn-primary">Редактировать</a>
+    <a href="{% url 'td:mileage_new' %}?car={{ car.id }}" class="btn btn-secondary">Добавить запись о пробеге</a>
+    <a href="#" class="btn btn-danger">Удалить</a>
+{% endblock %}
+
+{% block main %}
+    <br/>
+    <h3><i class="fa fa-car"></i> {{ car.name }} <span class="comment">{{ car.number }}</span></h3>
+    <br/>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_info' cid=car.id %}#main">Инфо</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_info' cid=car.id %}#proxies">Дов-ти</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_info' cid=car.id %}#docs">Док-ты</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_info' cid=car.id %}#ensurance">Страховка</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_info' cid=car.id %}#to">ТО</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_info' cid=car.id %}#tires">Резина</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_info' cid=car.id %}#passes">Пропуска</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_info' cid=car.id %}#rent">Аренда</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="{% url 'td:car_mileage' cid=car.id %}">Пробег</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'td:car_expenses' cid=car.id %}">Расходы</a>
+        </li>
+    </ul>
+    <br/>
+    <table>
+        <tr>
+            <td width="400">
+                <b>Ограничение пробега в месяц:</b> {{ car.mileage_limit }} км
+            </td>
+            <td>
+                <b>Год: </b>
+                <div class="btn-group" role="group" aria-label="First group">
+                    {% for y in years %}
+                        {% if y == year %}
+                            <a href="{% url 'td:car_mileage' cid=car.id year=y %}" class="btn btn-primary">{{ y }}</a>
+                        {% else %}
+                            <a href="{% url 'td:car_mileage' cid=car.id year=y %}" class="btn btn-secondary">{{ y }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <svg width="1000" height="550"></svg>
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'vendor/js/d3.min.js' %}"></script>
+    <script>
+        var mileage_data = JSON.parse('{{ mileages|escapejs }}');
+    </script>
+    <script src="{% static 'td/js/car_mileage.js' %}"></script>
+{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'td/css/car_mileage.css' %}">
+{% endblock %}
